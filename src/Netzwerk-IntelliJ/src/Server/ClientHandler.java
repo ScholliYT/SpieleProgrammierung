@@ -1,8 +1,6 @@
 package Server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
@@ -28,11 +26,12 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
 
-        String received;
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(dis));
+        BufferedWriter outputWriter = new BufferedWriter(new OutputStreamWriter(dos));
         while (true) {
             try {
                 // receive the string
-                received = dis.readUTF();
+                String received = inputReader.readLine();
 
                 System.out.println(received);
 
@@ -42,7 +41,7 @@ public class ClientHandler implements Runnable {
                 }
 
                 received = received.toUpperCase();
-                dos.writeUTF(received);
+                outputWriter.write(received);
             } catch (IOException e) {
                 e.printStackTrace();
             }
