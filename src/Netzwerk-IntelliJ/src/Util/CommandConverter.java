@@ -15,7 +15,7 @@ public class CommandConverter {
         if (!isValidCommand(text)) {
             throw new InvalidDataException("Message is in invalid format");
         }
-        String commandText = text.substring(1, text.length() - 2);
+        String commandText = text.substring(1, text.length() - 1);
 
 
         for (Command c : Command.values()) {

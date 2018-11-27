@@ -46,7 +46,7 @@ public class ClientHandler implements Runnable {
 
                 if(CommandConverter.isValidCommand(received)) {
                     Command command = CommandConverter.construct(received);
-                    System.out.println("Received command from " + getHostAddress() + ":" + command.name());
+                    System.out.println("    Received command from " + getHostAddress() + ": " + command.name());
 
                     if(command == Command.LOGOUT) {
                         this.clientSocket.close();
