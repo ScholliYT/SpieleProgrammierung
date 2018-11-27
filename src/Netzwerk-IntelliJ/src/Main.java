@@ -1,8 +1,10 @@
+import Client.ServerConnectionParameter;
+import Client.ServerConnectionParameterReader;
 import Client.TCPClient;
 import Server.TCPServer;
+import Util.Command;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.Scanner;
 
 public class Main {
@@ -28,21 +30,15 @@ public class Main {
 
         Scanner inputScanner = new Scanner(System.in);
 
-        String serverIPandPort;
-        do {
-            System.out.println("ip:port (192.168.1.2:25566) of server?");
-            serverIPandPort = inputScanner.nextLine();
-        } while (!serverIPandPort.contains(":") || serverIPandPort.split(":").length != 2);
+        ServerConnectionParameter serverConnection = new ServerConnectionParameterReader(inputScanner).invoke();
 
-        InetAddress serverIP;
         try {
-            serverIP = InetAddress.getByName(serverIPandPort.split(":")[0]);
-            int serverPort = Integer.parseInt(serverIPandPort.split(":")[1]);
-            TCPClient client = new TCPClient(serverIP, serverPort);
+            TCPClient client = new TCPClient(serverConnection);
 
-                client.connect();
-                client.write("Hello");
-
+            client.connect();
+            client.write("hello server");
+            client.write(Command.LOGOUT);
+            client.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,4 +50,5 @@ public class Main {
         TCPServer server = new TCPServer(25566);
         server.start();
     }
+
 }

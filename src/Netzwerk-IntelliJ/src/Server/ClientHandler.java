@@ -1,5 +1,9 @@
 package Server;
 
+import Util.Command;
+import Util.CommandConverter;
+import Util.CommandNotFoundException;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -8,6 +12,10 @@ public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private DataInputStream dis;
     private DataOutputStream dos;
+
+    public String getHostAddress() {
+        return clientSocket.getInetAddress().getHostAddress();
+    }
 
     // constructor
     public ClientHandler(Socket clientSocket) {
@@ -32,17 +40,23 @@ public class ClientHandler implements Runnable {
             try {
                 // receive the string
                 String received = inputReader.readLine();
+                if(received==null) continue;
 
-                System.out.println(received);
+                System.out.println(getHostAddress() + "< " + received);
 
-                if (received.equals("logout")) {
-                    this.clientSocket.close();
-                    break;
+                if(CommandConverter.isValidCommand(received)) {
+                    Command command = CommandConverter.construct(received);
+                    System.out.println("Received command from " + getHostAddress() + ":" + command.name());
+
+                    if(command == Command.LOGOUT) {
+                        this.clientSocket.close();
+                        break;
+                    }
                 }
 
                 received = received.toUpperCase();
-                outputWriter.write(received);
-            } catch (IOException e) {
+                outputWriter.write(received); // Echo with uppercase message
+            } catch (IOException | CommandNotFoundException e) {
                 e.printStackTrace();
             }
 
