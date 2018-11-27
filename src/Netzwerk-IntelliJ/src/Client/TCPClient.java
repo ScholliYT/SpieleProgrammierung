@@ -49,7 +49,7 @@ public class TCPClient {
             throw new NotConnectedException();
         }
         BufferedWriter outputWriter = new BufferedWriter(new OutputStreamWriter(dos));
-        outputWriter.write(msg);
+        outputWriter.write(msg + "\n");
         outputWriter.flush();
     }
 
