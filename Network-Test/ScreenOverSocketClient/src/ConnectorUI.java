@@ -6,10 +6,14 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -51,10 +55,11 @@ public class ConnectorUI extends JFrame{
 					while(true){
 						long start = System.currentTimeMillis();
 						BufferedImage img = r.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+						ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+						ImageIO.write(img, "jpg", byteOut);
 						long imgTime = System.currentTimeMillis();
-						ImageIcon icon = new ImageIcon(img);
 						long create = System.currentTimeMillis();
-						oos.writeObject(icon);
+						oos.writeObject(byteOut.toByteArray());
 						oos.flush();
 						oos.reset();
 						long sent = System.currentTimeMillis();
