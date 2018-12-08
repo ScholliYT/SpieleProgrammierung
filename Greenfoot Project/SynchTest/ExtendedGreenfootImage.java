@@ -1,4 +1,4 @@
-package client;
+
 import greenfoot.GreenfootImage;
 
 public class ExtendedGreenfootImage extends GreenfootImage{

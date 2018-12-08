@@ -1,4 +1,4 @@
-package synch;
+
 
 import java.io.Serializable;
 
@@ -10,10 +10,13 @@ public class SignInResponse implements Serializable{
 	
 	private final int response;
 	private final int assignedPlayerId;
+	private final int idRangeLow, idRangeHigh;
 	
-	public SignInResponse(int responseCode, int playerId){
+	public SignInResponse(int responseCode, int playerId, int idRangeLow, int idRangeHigh){
 		this.response = responseCode;
 		this.assignedPlayerId = playerId;
+		this.idRangeHigh = idRangeHigh;
+		this.idRangeLow = idRangeLow;
 	}
 	
 	public int getResponseCode(){
@@ -22,6 +25,14 @@ public class SignInResponse implements Serializable{
 	
 	public int getPlayerId(){
 		return assignedPlayerId;
+	}
+	
+	public int getIdRangeLow(){
+		return idRangeLow;
+	}
+	
+	public int getIdRangeHigh(){
+		return idRangeHigh;
 	}
 	
 }

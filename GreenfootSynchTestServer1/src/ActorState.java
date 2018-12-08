@@ -1,9 +1,8 @@
-package synch;
+
 
 import java.awt.Point;
 import java.io.Serializable;
 
-import client.ExtendedGreenfootImage;
 import greenfoot.Actor;
 
 public class ActorState implements Serializable{
@@ -13,11 +12,12 @@ public class ActorState implements Serializable{
 	private transient Actor actor;
 	
 	private Point location;
-	private int rotation;
+	private int rotation, id;
 	private String pic;
 	
-	private ActorState(Actor actor){
+	private ActorState(Actor actor, int id){
 		this.actor = actor;
+		this.id = id;
 		this.update();
 	}
 	
@@ -37,14 +37,23 @@ public class ActorState implements Serializable{
 		return pic;
 	}
 	
+	public int getId(){
+		return id;
+	}
+	
 	public void update(){
 		this.location = new Point(actor.getX(), actor.getY());
 		this.rotation = actor.getRotation();
 		this.pic = ((ExtendedGreenfootImage) actor.getImage()).getFilename();
 	}
 	
-	public static ActorState fromActor(Actor a){
-		return new ActorState(a);
+	//Clientseitige Methode
+	public Actor getActor(){
+		return actor;
+	}
+	
+	public static ActorState fromActor(Actor a, int id){
+		return new ActorState(a, id);
 	}
 	
 }

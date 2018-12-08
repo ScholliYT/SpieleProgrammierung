@@ -1,8 +1,5 @@
-package server;
-import java.io.ObjectInputStream;
 
-import synch.ClientSignInData;
-import synch.SignInResponse;
+import java.io.ObjectInputStream;
 
 public class ClientAuthenticator extends Thread{
 	
@@ -23,13 +20,14 @@ public class ClientAuthenticator extends Thread{
 				if(result instanceof ClientSignInData){
 					ClientSignInData data = (ClientSignInData) result;
 					if(data.acceptKey(key)){
-						client.sendObject(new SignInResponse(SignInResponse.RESULT_ACCEPT, GameServer.getInstance().getNextClientId()));
+						GameServer server = GameServer.getInstance();
+						client.sendObject(new SignInResponse(SignInResponse.RESULT_ACCEPT, server.getNextClientId(), server.getNextIdRangeStart()+1, server.getNextIdRangeStart()+100));
 						GameServer.getInstance().addNewClient(client);
 					}else{
-						client.sendObject(new SignInResponse(SignInResponse.RESULT_WRONG_KEY, -1));
+						client.sendObject(new SignInResponse(SignInResponse.RESULT_WRONG_KEY, -1, 0, 0));
 					}
 				}
-				client.sendObject(new SignInResponse(SignInResponse.RESULT_ERROR_UNDEFINDED, -1));
+				client.sendObject(new SignInResponse(SignInResponse.RESULT_ERROR_UNDEFINDED, -1, 0, 0));
 			}catch(Exception e){
 				e.printStackTrace();
 			}

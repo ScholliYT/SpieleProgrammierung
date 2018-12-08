@@ -1,12 +1,9 @@
-package client;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import synch.ClientSignInData;
-import synch.SignInResponse;
 
 public class ConnectionManager{
 	
@@ -28,7 +25,7 @@ public class ConnectionManager{
 			switch(((SignInResponse) result).getResponseCode()){
 			case SignInResponse.RESULT_ACCEPT:
 				System.out.println("accepted!");
-				return new ServerConnection(server, ois, oos);
+				return new ServerConnection(server, ois, oos, ((SignInResponse) result).getIdRangeLow(), ((SignInResponse) result).getIdRangeHigh());
 			case SignInResponse.RESULT_WRONG_KEY:
 				System.out.println("Wrong key!");
 				break;
