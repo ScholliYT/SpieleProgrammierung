@@ -1,7 +1,9 @@
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class ClientHandler extends Thread{
@@ -24,13 +26,11 @@ public class ClientHandler extends Thread{
 		while(true){
 			try{
 //				System.out.println("Receiving!");
-				Object in = ois.readObject();
-				if(in instanceof ImageIcon){
-					frame.update((ImageIcon) in);
-				}
-				
+				byte[] data = (byte[]) ois.readObject();
+				frame.update(new ImageIcon(ImageIO.read(new ByteArrayInputStream(data))));
 			}catch(Exception e){
 				e.printStackTrace();
+				break;
 			}
 		}
 	}
