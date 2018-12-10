@@ -14,7 +14,7 @@ public class GreenfootServerMain{
 	public static void main(String[] args){
 		try{
 			System.out.println("Connectaddresse: " + InetAddress.getByName(InetAddress.getLocalHost().getHostAddress()));
-			key = getRandomAccessKey(10);
+			key = getRandomAccessKey(3);
 			System.out.println("Accesskey: " + key);
 			
 			ServerSocket server = new ServerSocket(25566, 0, InetAddress.getByName(InetAddress.getLocalHost().getHostName()));
