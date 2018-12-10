@@ -26,3 +26,6 @@ hs_err_pid*
 /.settings/
 /.recommenders/
 /lib/
+GreenfootSynchTestServer1/\.idea/
+
+*.iml
