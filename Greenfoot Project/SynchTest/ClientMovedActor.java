@@ -13,9 +13,9 @@ public class ClientMovedActor extends Actor{
             move(-1);
         }
         if(Greenfoot.isKeyDown("A")){
-            turn(1);
-        }else if(Greenfoot.isKeyDown("D")){
             turn(-1);
+        }else if(Greenfoot.isKeyDown("D")){
+            turn(1);
         }
     }    
 }
