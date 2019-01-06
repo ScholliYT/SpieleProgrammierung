@@ -8,7 +8,7 @@ public class ClientSynchData implements Serializable{
 	
 	private ActorState[] myActors;
 	
-	public ClientSynchData(ActorState...actorStates){
+	public ClientSynchData(ActorState... actorStates){
 		this.myActors = actorStates;
 	}
 	

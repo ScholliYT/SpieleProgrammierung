@@ -96,6 +96,7 @@ public class ServerConnection extends Thread{
                 }
             }catch(Exception e){
                 e.printStackTrace();
+                return;
             }
         }
     }

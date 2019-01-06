@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
-public class GameServer implements Runnable {
+public class GameServer implements Runnable{
 	
 	private static GameServer SINGLETONE;
 	
@@ -39,7 +39,9 @@ public class GameServer implements Runnable {
 	
 	@Override
 	public void run() {
+		long start = System.currentTimeMillis();
 		try {
+			if(clients.size() <= 1) return;
 			SynchronizedTickData tickData = new SynchronizedTickData();
 			for (GameClient client : clients) {
 				ClientSynchData data = client.getMostRecentClientData();
@@ -55,6 +57,7 @@ public class GameServer implements Runnable {
 					e.printStackTrace();
 				}
 			}
+			System.out.println("Tick took " + (System.currentTimeMillis() - start) + "ms.");
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();

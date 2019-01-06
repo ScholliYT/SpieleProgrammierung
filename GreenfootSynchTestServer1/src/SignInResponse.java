@@ -11,6 +11,7 @@ public class SignInResponse implements Serializable{
 	private final int response;
 	private final int assignedPlayerId;
 	private final int idRangeLow, idRangeHigh;
+	private final boolean master = false;
 	
 	public SignInResponse(int responseCode, int playerId, int idRangeLow, int idRangeHigh){
 		this.response = responseCode;
@@ -33,6 +34,10 @@ public class SignInResponse implements Serializable{
 	
 	public int getIdRangeHigh(){
 		return idRangeHigh;
+	}
+	
+	public boolean isMaster(){
+		return master;
 	}
 	
 }

@@ -19,7 +19,7 @@ public class GreenfootServerMain{
 			
 			ServerSocket server = new ServerSocket(25566, 0, InetAddress.getByName(InetAddress.getLocalHost().getHostName()));
 			
-			final int TARGET_TICK_RATE = 30;
+			final int TARGET_TICK_RATE = 60;
 			
 			ScheduledExecutorService service = Executors.newScheduledThreadPool(2);
 			

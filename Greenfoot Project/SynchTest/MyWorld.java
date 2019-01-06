@@ -5,23 +5,23 @@ public class MyWorld extends World{
     
     public MyWorld(){    
         super(600, 400, 1);
-       // ServerLoginFrame frame = new ServerLoginFrame();
-       // frame.setVisible(true);
+        ServerLoginFrame frame = new ServerLoginFrame();
+        frame.setVisible(true);
         
-       // while(ServerConnection.getConnection() == null){
-          //  System.out.println("waiting...");
-       // }
+        while(ServerConnection.getConnection() == null){
+         System.out.println("waiting...");
+        }
         
          ClientMovedActor actor = new ClientMovedActor();
         addObject(actor, 0, 0);
-        //ServerConnection.getConnection().start();
-      //  ServerConnection.getConnection().synchActor(actor);
+        ServerConnection.getConnection().start();
+        ServerConnection.getConnection().synchActor(actor);
         
-        //frame.setVisible(false);
-        //frame.dispose();
+        frame.setVisible(false);
+        frame.dispose();
     }
-    
-    public void act123(){
+    @Override
+    public void act(){
         SynchronizedTickData data = ServerConnection.getConnection().getMostRecentData();
         if(data == null) return;
         ArrayList<ActorState> states = data.getAllActors();
