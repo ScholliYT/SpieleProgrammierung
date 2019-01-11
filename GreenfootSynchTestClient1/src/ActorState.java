@@ -48,8 +48,7 @@ public class ActorState implements Serializable{
 	}
 	
 	public Actor toActor(){
-		Actor a = new Actor(){
-		};
+		Actor a = new Actor(){};
 		a.setImage(pic);
 		a.setLocation(getX(), getY());
 		a.setRotation(rotation);

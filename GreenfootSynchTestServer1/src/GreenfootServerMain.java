@@ -1,7 +1,9 @@
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -13,10 +15,32 @@ public class GreenfootServerMain{
 	
 	public static void main(String[] args){
 		try{
+			NetworkingDevices devices = new NetworkingDevices();
+			
+			System.out.println("Wähle ein Netzwerkinterface, indem du die entsprechde ID ins Textfeld eingibst:");
+			devices.printAvailableInterfaces(System.out);
+			NetworkInterface networkInterface = null;
+			Scanner s = new Scanner(System.in);
+			while(networkInterface == null){
+				String in = s.nextLine();
+				
+				try{
+					int id = Integer.parseInt(in);
+					networkInterface = devices.getInterface(id);
+					if(networkInterface == null){
+						System.out.println("Gib bitte eine gültige ID ein:");
+					}
+					continue;
+				}catch(Exception e){}
+				System.out.println("Gib bitte eine gültige Nummer ein:");
+			}
+			s.close();
+			
 			System.out.println("Connectaddresse: " + InetAddress.getByName(InetAddress.getLocalHost().getHostAddress()));
 			key = getRandomAccessKey(3);
 			System.out.println("Accesskey: " + key);
 			
+			//Theoretisch müsste anhand der Addresse das richtige Interface verwendet werden
 			ServerSocket server = new ServerSocket(25566, 0, InetAddress.getByName(InetAddress.getLocalHost().getHostName()));
 			
 			final int TARGET_TICK_RATE = 60;
