@@ -1,4 +1,5 @@
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
@@ -14,8 +15,8 @@ public class NetworkingDevices{
 	public NetworkingDevices() throws SocketException{
 		this.interfaces = NetworkInterface.getNetworkInterfaces();
 		this.availableDevices = new HashMap<>();
+		int count = 0;
 		for(NetworkInterface i: Collections.list(interfaces)){
-			int count = 0;
 			if(i.getInetAddresses().hasMoreElements()){
 				availableDevices.put(++count, i);
 			}
