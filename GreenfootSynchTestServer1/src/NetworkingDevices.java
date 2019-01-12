@@ -1,4 +1,5 @@
 import java.io.PrintStream;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -38,8 +39,20 @@ public class NetworkingDevices{
 		out.format("%2s|%-50s|%-10s|%-20s\n", "ID", "Anzeigename", "Systemname", "Gerätaddresse");
 		for(Entry<Integer, NetworkInterface> entry: availableDevices.entrySet()){
 			NetworkInterface i = entry.getValue();
-			out.format("%2d|%-50s|%-10s|%-20s\n", entry.getKey(), i.getDisplayName(), i.getName(), i.getInetAddresses().nextElement().getHostAddress());
+			
+			out.format("%2d|%-50s|%-10s|%-20s\n", entry.getKey(), i.getDisplayName(), i.getName(), getIPv4AddressFor(i));
 		}
+	}
+	
+	public String getIPv4AddressFor(NetworkInterface i){
+		String ip = "unknown";
+		for(InetAddress address: Collections.list(i.getInetAddresses())){
+			if(address instanceof Inet4Address){
+				ip = address.getHostAddress();
+				break;
+			}
+		}
+		return ip;
 	}
 	
 	public NetworkInterface getInterface(int id){

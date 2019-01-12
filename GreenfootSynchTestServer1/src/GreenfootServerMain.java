@@ -37,12 +37,13 @@ public class GreenfootServerMain{
 			}
 			s.close();
 			
-			out.println("Connectaddresse: " + InetAddress.getByName(InetAddress.getLocalHost().getHostAddress()));
+			//Theoretisch müsste anhand der Addresse das richtige Interface verwendet werden
+			
+			out.println("Connectaddresse: " + devices.getIPv4AddressFor(networkInterface));
 			key = getRandomAccessKey(3);
 			out.println("Accesskey: " + key);
 			
-			//Theoretisch müsste anhand der Addresse das richtige Interface verwendet werden
-			ServerSocket server = new ServerSocket(25566, 0, networkInterface.getInetAddresses().nextElement());
+			ServerSocket server = new ServerSocket(25566, 0, InetAddress.getByName(devices.getIPv4AddressFor(networkInterface)));
 			
 			final int TARGET_TICK_RATE = 60;
 			
