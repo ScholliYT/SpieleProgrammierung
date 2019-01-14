@@ -10,8 +10,8 @@ public class ServerConnection{
 	
 	private ServerSocket socket;
 	
-	public ServerConnection(ProjectFrame frame) throws UnknownHostException, IOException{
-		this.socket = new ServerSocket(25566, 0, InetAddress.getByName(InetAddress.getLocalHost().getHostAddress()));
+	public ServerConnection(ProjectFrame frame, InetAddress ip, int port) throws UnknownHostException, IOException{
+		this.socket = new ServerSocket(port, 0, ip);
 		Thread connector = new Thread(() -> {
 			while(true){
 				try {

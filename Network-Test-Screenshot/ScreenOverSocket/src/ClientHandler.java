@@ -23,6 +23,7 @@ public class ClientHandler extends Thread{
 	
 	@Override
 	public void run() {
+		frame.setTitle("Bildschrimübertragung von: " + client.getInetAddress().toString());
 		while(true){
 			try{
 //				System.out.println("Receiving!");
