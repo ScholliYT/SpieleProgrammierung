@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ScreenOverSocket:jar">
+    <output-path>$PROJECT_DIR$/out/jar/ScreenOverSocket_jar</output-path>
+    <root id="archive" name="ScreenOverSocket.jar">
+      <element id="module-output" name="ScreenOverSocket" />
+    </root>
+  </artifact>
+</component>
