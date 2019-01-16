@@ -1,5 +1,4 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot und MouseInfo)
-import java.util.*;
+import greenfoot.Actor;
 
 public class Ball extends Actor{
     

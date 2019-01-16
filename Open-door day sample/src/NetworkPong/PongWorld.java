@@ -6,7 +6,10 @@ import javax.swing.JOptionPane;
 import java.io.*;
 
 public class PongWorld extends World{
-    
+
+    private final String IP = "192.168.178.41";
+    private final int PORT = 25566;
+
     private ServerSocket host;
     private Socket client;
     
@@ -18,45 +21,46 @@ public class PongWorld extends World{
     private Ball ball;
     private Bat bat;
     private RemoteBat remote;
-    
+
     private int dx, dy;
-    
+
     public PongWorld() throws Exception{
         super(1000, 500, 1);
-        isHost = true;
         this.dx = 3;
         this.dy = 0;
         
         int result = JOptionPane.showConfirmDialog(null, "Möchten Sie diesen Rechner als Host verwenden?", "Hostwahl", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(result == JOptionPane.CLOSED_OPTION) return;
         isHost = (result == JOptionPane.YES_OPTION);
-        
+
+        this.bat = new Bat();
+        this.remote = new RemoteBat();
+        this.ball = new Ball();
+        addObject(ball, 500, 250);
+
         if(isHost){
-            this.bat = new Bat();
-            this.remote = new RemoteBat();
-            this.ball = new Ball();
-            
+            System.out.println("Starting Host on this machine...");
+
             addObject(bat, 20, 250);
             addObject(remote, 980, 250);
-            addObject(ball, 500, 250);
+
             
-            this.host = new ServerSocket(25566, 50, InetAddress.getByName("192.168.178.73"));
+            this.host = new ServerSocket(PORT, 50, InetAddress.getByName(IP));
+            System.out.println("Waiting for a client to connect...");
             this.client = host.accept();
             client.setTcpNoDelay(true);
-            
+            System.out.println("Client from " + client.getInetAddress().getHostAddress() + " connected.");
             ois = new ObjectInputStream(client.getInputStream());
             oos = new ObjectOutputStream(client.getOutputStream());
             Greenfoot.start();
         }else{
-            this.bat = new Bat();
-            this.remote = new RemoteBat();
-            this.ball = new Ball();
-            
+            System.out.println("Starting Client on this machine...");
+
             addObject(bat, 980, 250);
             addObject(remote, 20, 250);
-            addObject(ball, 500, 250);
-            
-            client = new Socket("192.168.178.73", 25566);
+
+
+            client = new Socket(IP, this.PORT);
             client.setTcpNoDelay(true);
             
             this.oos = new ObjectOutputStream(client.getOutputStream());
@@ -73,16 +77,18 @@ public class PongWorld extends World{
             }else{
                 handleClientTasks();
             }
-        }catch(Exception e){}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     
     private void handleHostTasks() throws Exception{
         if(ball.getX() < 5){ //Punkt für client
-            //TODO puntke geben
             resetBall();
+            //TODO puntke geben (async?)
         }else if(ball.getX() > 995){ //Punkt für host
-            //TODO puntke geben
             resetBall();
+            //TODO puntke geben (async?)
         }else if(ball.getIntesecting(Bat.class) != null){ //Host trifft ball
            handleBatHit(bat);
         }else if(ball.getIntesecting(RemoteBat.class) != null){ //Client trifft

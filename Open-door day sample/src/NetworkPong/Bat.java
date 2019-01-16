@@ -3,14 +3,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot und MouseInfo)
 import static greenfoot.Greenfoot.isKeyDown;
 
 /**
- * Ergänzen Sie hier eine Beschreibung für die Klasse Bat.
- * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
+ * Diese Klasse stellt einen Spieler (Schläger) dar.
+ *
  */
 public class Bat extends Actor{
     
     public Bat(){
+
     }
     
     public void act(){
