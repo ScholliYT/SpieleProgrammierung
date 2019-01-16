@@ -4,6 +4,7 @@ import java.net.*;
 import javax.swing.JOptionPane;
 
 import java.io.*;
+import java.util.Random;
 
 public class PongWorld extends World{
 
@@ -119,7 +120,7 @@ public class PongWorld extends World{
 
     private void resetBall(){
        ball.setLocation(getWidth()/2, getHeight()/2);
-       dx = 3;
+       dx = new Random().nextBoolean() ? 3 : -3; // randomly choose starting direction on x-Axis
        dy = 0;
     }
 
