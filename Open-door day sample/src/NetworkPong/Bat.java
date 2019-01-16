@@ -31,8 +31,9 @@ public class Bat extends Actor{
     }
     
     private boolean isInWorld(int x, int y){
+        int playerHeight = getImage().getHeight();
         World w = getWorld();
-        return !(x < 0 || y < 0 || x > w.getWidth() || y > w.getHeight());
+        return !(x < 0 || y < playerHeight/2 || x > w.getWidth() || y > w.getHeight() - playerHeight/2);
     }
     
     private boolean shouldMoveUp(){
