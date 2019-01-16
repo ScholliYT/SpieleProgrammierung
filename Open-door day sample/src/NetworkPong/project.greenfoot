@@ -1,5 +1,5 @@
 #Greenfoot project file
-class.Ball.image=blue-draught.png
+class.Ball.image=blue-draught_fullsize.png
 class.Ball.superclass=greenfoot.Actor
 class.Bat.image=bat.png
 class.Bat.superclass=greenfoot.Actor
@@ -29,10 +29,10 @@ editor.fx.0.width=0
 editor.fx.0.x=0
 editor.fx.0.y=0
 height=1056
-mainWindow.height=971
-mainWindow.width=1277
-mainWindow.x=758
-mainWindow.y=331
+mainWindow.height=1063
+mainWindow.width=1936
+mainWindow.x=1912
+mainWindow.y=1055
 package.numDependencies=5
 package.numTargets=6
 project.charset=UTF-8

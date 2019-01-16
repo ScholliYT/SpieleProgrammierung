@@ -1,10 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot und MouseInfo)
 
 /**
- * Ergänzen Sie hier eine Beschreibung für die Klasse RemoteBat.
- * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
+ * Diese Klasse stellt einen Spieler (Schläger) dar, welche von einem anderem Client gesteuert wird.
  */
 public class RemoteBat extends Actor{
     

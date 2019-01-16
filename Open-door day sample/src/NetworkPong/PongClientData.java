@@ -1,5 +1,8 @@
 import java.io.Serializable;
 
+/**
+ * Diese Klasse stellt einen Datenpaket dar, welches vom Client zum Host gesendet wird.
+ */
 public class PongClientData implements Serializable{
 	
 	private static final long serialVersionUID = -6243741163353349874L;

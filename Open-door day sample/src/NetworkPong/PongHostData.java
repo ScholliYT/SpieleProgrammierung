@@ -1,6 +1,9 @@
 import java.awt.Point;
 import java.io.Serializable;
 
+/**
+ * Diese Klasse stellt einen Datenpaket dar, welches vom Host zum Client gesendet wird.
+ */
 public class PongHostData implements Serializable{
 	
 	private static final long serialVersionUID = 4498114982435349255L;
