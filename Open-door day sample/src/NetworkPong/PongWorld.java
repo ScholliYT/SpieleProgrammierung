@@ -28,11 +28,10 @@ public class PongWorld extends World{
     private int dx, dy;
 
     private final int BALL_WALL_OFFSET = 20;
+    private final int BALL_MAX_SPEED_Y = 2;
 
     public PongWorld() throws Exception{
         super(1000, 500, 1);
-        this.dx = 3;
-        this.dy = 0;
 
         int result = JOptionPane.showConfirmDialog(null, "Möchten Sie diesen Rechner als Host verwenden?", "Hostwahl", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(result == JOptionPane.CLOSED_OPTION) return;
@@ -42,6 +41,7 @@ public class PongWorld extends World{
         this.remote = new RemoteBat();
         this.ball = new Ball();
         addObject(ball, getWidth()/2, getHeight()/2);
+        resetBall();
 
         if(isHost){
             System.out.println("Starting Host on this machine...");
@@ -57,7 +57,6 @@ public class PongWorld extends World{
             System.out.println("Client from " + client.getInetAddress().getHostAddress() + " connected.");
             ois = new ObjectInputStream(client.getInputStream());
             oos = new ObjectOutputStream(client.getOutputStream());
-            Greenfoot.start();
         }else{
             System.out.println("Starting Client on this machine...");
 
@@ -70,9 +69,9 @@ public class PongWorld extends World{
 
             this.oos = new ObjectOutputStream(client.getOutputStream());
             this.ois = new ObjectInputStream(client.getInputStream());
-
-            Greenfoot.start();
         }
+        System.out.println("Starting the Game!");
+        Greenfoot.start();
     }
 
     public void act(){
@@ -113,8 +112,8 @@ public class PongWorld extends World{
     private void handleBatHit(Actor bat){
         dx = -dx;
         dy = (ball.getY() - bat.getY()) / 2;
-        if(dy > 2) dy = 2;
-        if(dy < -2) dy = -2;
+        if(dy > BALL_MAX_SPEED_Y) dy = BALL_MAX_SPEED_Y;
+        if(dy < -BALL_MAX_SPEED_Y) dy = -BALL_MAX_SPEED_Y;
         ball.setLocation(ball.getX() + dx, ball.getY() + dy);
     }
 
