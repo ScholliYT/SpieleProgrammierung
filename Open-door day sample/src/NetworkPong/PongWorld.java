@@ -110,11 +110,16 @@ public class PongWorld extends World{
     }
 
     private void handleBatHit(Actor bat){
+        // TODO: use current dy of the bat / ball to calculate new dx/dy;
         dx = -dx;
         dy = (ball.getY() - bat.getY()) / 2;
         if(dy > BALL_MAX_SPEED_Y) dy = BALL_MAX_SPEED_Y;
         if(dy < -BALL_MAX_SPEED_Y) dy = -BALL_MAX_SPEED_Y;
-        ball.setLocation(ball.getX() + dx, ball.getY() + dy);
+
+        // Ensure ball wont get stuck in the bat // TODO: this wont work when paddle is moving "into" the ball. Maybe add "Do not collide for x seconds" Flag
+        do {
+            ball.setLocation(ball.getX() + dx, ball.getY() + dy);
+        } while (ball.getIntesecting(bat.getClass()) != null);
     }
 
     private void resetBall(){
