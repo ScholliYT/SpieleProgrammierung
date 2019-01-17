@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Point;
 import java.io.*;
+import java.security.InvalidParameterException;
 import java.util.Random;
 
 public class PongWorld extends World{
@@ -114,7 +115,7 @@ public class PongWorld extends World{
             }
         }
         
-        if(booster == null && r.nextInt(1000) == 0){ //Einen Booster auf der Karte spawnen
+        if(booster == null && r.nextInt(1000) == 0){ //Einen Booster auf der Karte spawnen mit Chance 0.1%
         	int boosterX = randomNbrInRange(2 * BALL_WALL_OFFSET, getWidth() - 2 * BALL_WALL_OFFSET);
         	int boosterY = randomNbrInRange(0, getHeight());
         	
@@ -128,9 +129,14 @@ public class PongWorld extends World{
         oos.flush();
         remote.setLocation(data.getX(), data.getY()); // Empfangene Daten vom Client anzeigen
     }
-    
+
+    /*
+    * Generates a random int in range [min|max] (bounds inclusive).
+    * For this to work: min <= max.
+     */
     private int randomNbrInRange(int min, int max){
-    	return r.nextInt((max - min) + 1) + min;
+    	if(max < min) {throw new InvalidParameterException("max is smaller than min.");}
+        return r.nextInt((max - min) + 1) + min;
     }
     
     private void handleBatHit(Actor bat){
@@ -159,13 +165,13 @@ public class PongWorld extends World{
         this.ball.setLocation(data.getBallPos().x, data.getBallPos().y);
         this.remote.setLocation(data.getBatPos().x, data.getBatPos().y);
         
-        if(data.getBoosterPos().x == -1 && booster != null){ //K1 booster auf welt
+        if(data.getBoosterPos().x == -1 && booster != null){ // Kein Booster mehr in der Welt des Hosts
         	removeObject(booster);
         	booster = null;
-        }else if(booster == null && data.getBoosterPos().x > 0){ //Booster auf welt
+        }else if(booster == null && data.getBoosterPos().x > 0){ // Neuer Booster in der Welt des Hosts
         	booster = new Booster();
         	addObject(booster, data.getBoosterPos().x, data.getBoosterPos().y);
-        }else if(booster != null && data.getBoosterPos().x > 0){
+        }else if(booster != null && data.getBoosterPos().x > 0){ // Position des aktuellen Boosters hat sich geändert
         	booster.setLocation(data.getBoosterPos().x, data.getBoosterPos().y);
         }
         
