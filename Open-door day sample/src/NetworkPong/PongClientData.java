@@ -7,7 +7,8 @@ public class PongClientData implements Serializable{
 	
 	private static final long serialVersionUID = -6243741163353349874L;
 	
-	private int x, y;
+	private final int x;
+	private final int y;
 	
 	public PongClientData(int x, int y){
 		this.x = x;
