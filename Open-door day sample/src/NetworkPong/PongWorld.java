@@ -5,7 +5,6 @@ import javax.swing.JOptionPane;
 
 import java.awt.Point;
 import java.io.*;
-import java.security.InvalidParameterException;
 import java.util.Random;
 
 public class PongWorld extends World{
@@ -39,9 +38,17 @@ public class PongWorld extends World{
     public PongWorld() throws Exception{
         super(1000, 500, 1);
 
-        int result = JOptionPane.showConfirmDialog(null, "Möchten Sie diesen Rechner als Host verwenden?", "Hostwahl", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if(result == JOptionPane.CLOSED_OPTION) return;
-        isHost = (result == JOptionPane.YES_OPTION);
+//        int result = JOptionPane.showConfirmDialog(null, "Möchten Sie diesen Rechner als Host verwenden?", "Hostwahl", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+//        if(result == JOptionPane.CLOSED_OPTION) return;
+//        isHost = (result == JOptionPane.YES_OPTION);
+        
+        GameInitFrame frame = new GameInitFrame();
+        frame.setVisible(true);
+        
+        this.isHost = frame.isHost();
+        InetAddress ip = frame.getSelectedAddress();
+        int port = frame.getSelectedPort();
+        
         this.r = new Random();
         
         this.bat = new Bat();
@@ -57,7 +64,7 @@ public class PongWorld extends World{
             addObject(remote, getWidth()-BALL_WALL_OFFSET, getHeight()/2);
 
 
-            this.host = new ServerSocket(PORT, 50, InetAddress.getByName(IP));
+            this.host = new ServerSocket(port, 50, ip);
             System.out.println("Waiting for a client to connect...");
             this.client = host.accept();
             client.setTcpNoDelay(true);
@@ -71,7 +78,7 @@ public class PongWorld extends World{
             addObject(remote, BALL_WALL_OFFSET, getHeight()/2);
 
 
-            client = new Socket(IP, this.PORT);
+            client = new Socket(ip, port);
             client.setTcpNoDelay(true);
 
             this.oos = new ObjectOutputStream(client.getOutputStream());
@@ -135,7 +142,7 @@ public class PongWorld extends World{
     * For this to work: min <= max.
      */
     private int randomNbrInRange(int min, int max){
-    	if(max < min) {throw new InvalidParameterException("max is smaller than min.");}
+    	if(max < min) {throw new IllegalArgumentException("max is smaller than min.");}
         return r.nextInt((max - min) + 1) + min;
     }
     
