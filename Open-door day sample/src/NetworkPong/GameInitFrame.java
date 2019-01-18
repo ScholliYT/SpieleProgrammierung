@@ -13,9 +13,7 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.awt.event.InputEvent;
 import javax.swing.JLabel;
 import javax.swing.ButtonGroup;
@@ -111,13 +109,13 @@ public class GameInitFrame extends JFrame{
 						ipChecker.start();
 					}
 					
-				}catch(Exception ignore){
-					ignore.printStackTrace();
+				}catch(Exception ex){
+					ex.printStackTrace();
 				}
 				
 				try{
 					Thread.sleep(1000);
-				}catch(InterruptedException ie){}
+				}catch(InterruptedException ignore){}
 				((DefaultComboBoxModel<String>) cbIpClient.getModel()).removeAllElements();
 				for(String s: results){
 					cbIpClient.addItem(s);
@@ -153,8 +151,8 @@ public class GameInitFrame extends JFrame{
 		rdbtnHost.setFocusPainted(false);
 		rdbtnHost.setSelected(true);
 		rdbtnHost.addActionListener(action -> {
-			panelClient.setVisible(!true);
-			panelHostoptions.setVisible(!false);
+			panelClient.setVisible(false);
+			panelHostoptions.setVisible(true);
 			contentPane.remove(panelClient);
 			contentPane.add(panelHostoptions, BorderLayout.CENTER);
 			contentPane.revalidate();
@@ -218,7 +216,8 @@ public class GameInitFrame extends JFrame{
 		
 		JMenu mnDatei = new JMenu("Datei");
 		menuBar.add(mnDatei);
-		
+
+		// TODO: Beenden Funktionalität implementieren
 		JMenuItem mntmBeenden = new JMenuItem("Beenden");
 		mntmBeenden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mnDatei.add(mntmBeenden);
@@ -241,6 +240,7 @@ public class GameInitFrame extends JFrame{
 	}
 	
 	public boolean isHost() throws Exception{
+		// TODO: Was macht das hier? ~Tom
 		while(isVisible());
 		
 		if(isHost){

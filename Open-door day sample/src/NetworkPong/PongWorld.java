@@ -1,17 +1,15 @@
-import greenfoot.*;
-import java.net.*;
+import greenfoot.Actor;
+import greenfoot.Greenfoot;
+import greenfoot.World;
 
-import javax.swing.JOptionPane;
-
-import java.awt.Point;
-import java.io.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Random;
 
 public class PongWorld extends World{
-
-    // Networking
-    private final String IP = "192.168.178.73"; // Default IP
-    private final int PORT = 25566;
 
     private ServerSocket host;
     private Socket client;
@@ -38,10 +36,6 @@ public class PongWorld extends World{
     public PongWorld() throws Exception{
         super(1000, 500, 1);
 
-//        int result = JOptionPane.showConfirmDialog(null, "Möchten Sie diesen Rechner als Host verwenden?", "Hostwahl", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//        if(result == JOptionPane.CLOSED_OPTION) return;
-//        isHost = (result == JOptionPane.YES_OPTION);
-        
         GameInitFrame frame = new GameInitFrame();
         frame.setVisible(true);
         

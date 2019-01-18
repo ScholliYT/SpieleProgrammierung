@@ -9,8 +9,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import sun.nio.ch.Net;
-
 public class NetworkingDevices{
 	
 	private Enumeration<NetworkInterface> interfaces;
@@ -20,8 +18,8 @@ public class NetworkingDevices{
 		this.interfaces = NetworkInterface.getNetworkInterfaces();
 		this.availableDevices = new HashMap<>();
 		int count = 0;
-		for(NetworkInterface i: Collections.list(interfaces)){
-			if(i.getInetAddresses().hasMoreElements() && i != null){
+		for(NetworkInterface i : Collections.list(interfaces)){
+			if(i != null && i.getInetAddresses().hasMoreElements()){
 				availableDevices.put(++count, i);
 			}
 		}

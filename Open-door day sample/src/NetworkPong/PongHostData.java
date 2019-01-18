@@ -8,10 +8,14 @@ public class PongHostData implements Serializable{
 	
 	private static final long serialVersionUID = 4498114982435349255L;
 	
-	private int ballX, ballY;
-	private int batX, batY;
-	private int boosterX, boosterY;
-	private int pointHost, pointClient;
+	private final int ballX;
+	private final int ballY;
+	private final int batX;
+	private final int batY;
+	private final int boosterX;
+	private final int boosterY;
+	private final int pointHost;
+	private final int pointClient;
 	
 	public PongHostData(int batX, int batY, int ballX, int ballY, int boosterX, int boosterY,
 			int pointsHost, int pointsClient){
@@ -41,8 +45,6 @@ public class PongHostData implements Serializable{
 		return pointHost;
 	}
 	
-	public int getClientPoints(){
-		return pointClient;
-	}
+	public int getClientPoints(){ return pointClient; }
 	
 }
