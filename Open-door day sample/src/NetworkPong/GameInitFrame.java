@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GameInitFrame extends JFrame {
 
@@ -43,8 +44,7 @@ public class GameInitFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                Greenfoot.stop();
-                dispose();
+               exit();
             }
         });
         setResizable(false);
@@ -89,7 +89,7 @@ public class GameInitFrame extends JFrame {
                         InetAddress inet = InetAddress.getByAddress(new byte[]{buf[0], buf[1], buf[2], (byte) i});
                         Thread ipChecker = new Thread(() -> {
                             try {
-                                if (inet.isReachable(500)) {
+                                if (inet.isReachable(1000)) {
                                     synchronized (results) {
                                         results.add(inet.getHostAddress());
                                     }
@@ -105,10 +105,11 @@ public class GameInitFrame extends JFrame {
                 }
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1500);
                 } catch (InterruptedException ignore) {
                 }
                 ((DefaultComboBoxModel<String>) cbIpClient.getModel()).removeAllElements();
+                Collections.sort(results);
                 for (String s : results) {
                     cbIpClient.addItem(s);
                 }
@@ -209,9 +210,12 @@ public class GameInitFrame extends JFrame {
         JMenu mnDatei = new JMenu("Datei");
         menuBar.add(mnDatei);
 
-        // TODO: Beenden Funktionalität implementieren
+        // TODO: Beenden Funktionalität implementieren - anstatt nen Issue zu öffnen hätte man es eben implementieren können, uff
         JMenuItem mntmBeenden = new JMenuItem("Beenden");
         mntmBeenden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
+        mntmBeenden.addActionListener(action -> {
+        	exit();
+        });
         mnDatei.add(mntmBeenden);
 
         JPanel panel = new JPanel();
@@ -232,7 +236,11 @@ public class GameInitFrame extends JFrame {
     }
 
 
-
+    private void exit(){
+    	 //Greenfoot.stop();
+         //dispose();
+         System.exit(0);
+    }
 
     public boolean isHost() throws Exception {
         // TODO: Was macht das hier? ~Tom
