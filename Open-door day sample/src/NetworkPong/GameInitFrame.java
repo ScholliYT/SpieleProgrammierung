@@ -75,42 +75,38 @@ public class GameInitFrame extends JFrame {
         btnNetworkScan.addActionListener(action -> {
             Thread worker = new Thread(() -> {
                 ArrayList<String> results = new ArrayList<>();
-                try {
+                try{
                     DatagramSocket socket = new DatagramSocket();
                     socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
                     InetAddress local = socket.getLocalAddress();
                     socket.close();
 
                     byte[] localByte = local.getAddress();
-                    byte[] buf = new byte[3];
-                    System.arraycopy(localByte, 0, buf, 0, 3);
 
-                    for (int i = 0; i <= 255; i++) {
-                        InetAddress inet = InetAddress.getByAddress(new byte[]{buf[0], buf[1], buf[2], (byte) i});
+                    for(int i = 0; i <= 255; i++){
+                        InetAddress inet = InetAddress.getByAddress(new byte[]{localByte[0], localByte[1], localByte[2], (byte) i});
                         Thread ipChecker = new Thread(() -> {
-                            try {
-                                if (inet.isReachable(1000)) {
-                                    synchronized (results) {
+                            try{
+                                if(inet.isReachable(1000)){
+                                    synchronized (results){
                                         results.add(inet.getHostAddress());
                                     }
                                 }
-                            } catch (Exception ignore) {
-                            }
+                            }catch(Exception ignore){}
                         });
                         ipChecker.start();
                     }
 
-                } catch (Exception ex) {
+                }catch(Exception ex){
                     ex.printStackTrace();
                 }
 
-                try {
+                try{
                     Thread.sleep(1500);
-                } catch (InterruptedException ignore) {
-                }
+                }catch(InterruptedException ignore){}
                 ((DefaultComboBoxModel<String>) cbIpClient.getModel()).removeAllElements();
                 Collections.sort(results);
-                for (String s : results) {
+                for(String s : results){
                     cbIpClient.addItem(s);
                 }
             });
