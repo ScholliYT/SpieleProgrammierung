@@ -80,6 +80,9 @@ public class PongWorld extends World{
             this.oos = new ObjectOutputStream(client.getOutputStream());
             this.ois = new ObjectInputStream(client.getInputStream());
         }
+        
+        
+        
         System.out.println("Starting the Game!");
         Greenfoot.start();
     }
@@ -125,7 +128,7 @@ public class PongWorld extends World{
             booster = new Booster();
             addObject(booster, boosterX, boosterY);
         }
-        
+        showScoreboard(pointsHost, pointsClient);
         PongClientData data = (PongClientData) ois.readObject(); // Daten vom client empfangen
         oos.writeObject(new PongHostData(bat.getX(), bat.getY(), ball.getX(), ball.getY(), (booster != null ? booster.getX() : -1), (booster != null ? booster.getY() : -1),
                 pointsHost, pointsClient)); // aktuelle Daten an Client senden
@@ -177,7 +180,12 @@ public class PongWorld extends World{
         }else if(booster != null && data.getBoosterPos().x > 0){ // Position des aktuellen Boosters hat sich geändert
             booster.setLocation(data.getBoosterPos().x, data.getBoosterPos().y);
         }
-        
+        showScoreboard(data.getHostPoints(), data.getClientPoints());
+    }
+    
+    private void showScoreboard(int host, int client){
+         showText("" + host, BALL_WALL_OFFSET + 20, 50);
+        showText("" + client, getWidth() - BALL_WALL_OFFSET - 20, 50);
     }
     
     private void exception(Object o){
