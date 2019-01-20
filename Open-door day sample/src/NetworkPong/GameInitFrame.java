@@ -240,7 +240,9 @@ public class GameInitFrame extends JFrame {
 
     public boolean isHost() throws Exception {
         // TODO: Was macht das hier? ~Tom
-        while (isVisible()) ;
+        while (isVisible()){
+            Thread.sleep(1);
+        }
 
         if (isHost) {
             this.selectedAddress = networking.getIPv4AddressFor(networking.getInterface(cbNetworkInterfaces.getSelectedIndex() + 1));

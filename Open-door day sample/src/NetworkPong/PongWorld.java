@@ -40,7 +40,7 @@ public class PongWorld extends World{
         
         GameInitFrame frame = new GameInitFrame();
         frame.setVisible(true);
-        
+        Thread.sleep(100);
         this.isHost = frame.isHost();
         InetAddress ip = frame.getSelectedAddress();
         int port = frame.getSelectedPort();
