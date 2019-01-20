@@ -35,7 +35,9 @@ public class PongWorld extends World{
 
     public PongWorld() throws Exception{
         super(1000, 500, 1);
-
+        
+        //exception(null); //Throws exception in order to test dialog
+        
         GameInitFrame frame = new GameInitFrame();
         frame.setVisible(true);
         
@@ -50,7 +52,7 @@ public class PongWorld extends World{
         this.ball = new Ball();
         addObject(ball, getWidth()/2, getHeight()/2);
         resetBall();
-
+        
         if(isHost){
             System.out.println("Starting Host on this machine...");
 
@@ -106,9 +108,9 @@ public class PongWorld extends World{
         }else if(ball.getIntesecting(RemoteBat.class) != null){ //Client trifft
             handleBatHit(remote);
         }else if(ball.getIntesecting(Booster.class) != null){
-        	removeObject(booster);
-        	booster = null;
-        	dx += 1;
+            removeObject(booster);
+            booster = null;
+            dx += 1;
         }else{ //Ball fliegt einfach weiter (Bounce oben / unten)
             ball.setLocation(ball.getX() + dx, ball.getY() + dy);
             if(ball.getY() <= ball.getImage().getHeight()/2 || ball.getY() >= getHeight() - ball.getImage().getHeight()/2){
@@ -117,16 +119,16 @@ public class PongWorld extends World{
         }
         
         if(booster == null && r.nextInt(1000) == 0){ //Einen Booster auf der Karte spawnen mit Chance 0.1%
-        	int boosterX = randomNbrInRange(2 * BALL_WALL_OFFSET, getWidth() - 2 * BALL_WALL_OFFSET);
-        	int boosterY = randomNbrInRange(0, getHeight());
-        	
-        	booster = new Booster();
-        	addObject(booster, boosterX, boosterY);
+            int boosterX = randomNbrInRange(2 * BALL_WALL_OFFSET, getWidth() - 2 * BALL_WALL_OFFSET);
+            int boosterY = randomNbrInRange(0, getHeight());
+            
+            booster = new Booster();
+            addObject(booster, boosterX, boosterY);
         }
         
         PongClientData data = (PongClientData) ois.readObject(); // Daten vom client empfangen
         oos.writeObject(new PongHostData(bat.getX(), bat.getY(), ball.getX(), ball.getY(), (booster != null ? booster.getX() : -1), (booster != null ? booster.getY() : -1),
-        		pointsHost, pointsClient)); // aktuelle Daten an Client senden
+                pointsHost, pointsClient)); // aktuelle Daten an Client senden
         oos.flush();
         remote.setLocation(data.getX(), data.getY()); // Empfangene Daten vom Client anzeigen
     }
@@ -136,7 +138,7 @@ public class PongWorld extends World{
     * For this to work: min <= max.
      */
     private int randomNbrInRange(int min, int max){
-    	if(max < min) {throw new IllegalArgumentException("max is smaller than min.");}
+        if(max < min) {throw new IllegalArgumentException("max is smaller than min.");}
         return r.nextInt((max - min) + 1) + min;
     }
     
@@ -167,14 +169,23 @@ public class PongWorld extends World{
         this.remote.setLocation(data.getBatPos().x, data.getBatPos().y);
         
         if(data.getBoosterPos().x == -1 && booster != null){ // Kein Booster mehr in der Welt des Hosts
-        	removeObject(booster);
-        	booster = null;
+            removeObject(booster);
+            booster = null;
         }else if(booster == null && data.getBoosterPos().x > 0){ // Neuer Booster in der Welt des Hosts
-        	booster = new Booster();
-        	addObject(booster, data.getBoosterPos().x, data.getBoosterPos().y);
+            booster = new Booster();
+            addObject(booster, data.getBoosterPos().x, data.getBoosterPos().y);
         }else if(booster != null && data.getBoosterPos().x > 0){ // Position des aktuellen Boosters hat sich geändert
-        	booster.setLocation(data.getBoosterPos().x, data.getBoosterPos().y);
+            booster.setLocation(data.getBoosterPos().x, data.getBoosterPos().y);
         }
         
     }
+    
+    private void exception(Object o){
+        try{
+            o.toString();
+        }catch(Exception e){
+            new ExceptionDialog(e).setVisible(true);
+        }
+    }
+    
 }
