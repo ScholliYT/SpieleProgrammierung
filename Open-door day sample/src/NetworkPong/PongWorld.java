@@ -11,11 +11,11 @@ import java.util.Random;
 
 public class PongWorld extends World{
 
-    private ServerSocket host;
-    private Socket client;
+//    private ServerSocket host;
+//    private Socket client;
 
-    private ObjectInputStream ois;
-    private ObjectOutputStream oos;
+//    private ObjectInputStream ois;
+//    private ObjectOutputStream oos;
 
     private boolean isHost;
 
@@ -29,10 +29,13 @@ public class PongWorld extends World{
     
     private int dx, dy;
     private int pointsHost, pointsClient;
-
+    
+    private PongClientConnection clientConnection;
+    private PongHostConnection hostConnection;
+    
     private final int BALL_WALL_OFFSET = 20;
     private final int BALL_MAX_SPEED_Y = 2;
-
+    
     public PongWorld() throws Exception{
         super(1000, 500, 1);
         
@@ -60,13 +63,13 @@ public class PongWorld extends World{
             addObject(remote, getWidth()-BALL_WALL_OFFSET, getHeight()/2);
 
 
-            this.host = new ServerSocket(port, 50, ip);
+            this.hostConnection = new PongHostConnection(ip, 50, port, true);
             System.out.println("Waiting for a client to connect...");
-            this.client = host.accept();
-            client.setTcpNoDelay(true);
-            System.out.println("Client from " + client.getInetAddress().getHostAddress() + " connected.");
-            ois = new ObjectInputStream(client.getInputStream());
-            oos = new ObjectOutputStream(client.getOutputStream());
+            hostConnection.waitForClientConnection();
+            hostConnection.start();
+//            System.out.println("Client from " + client.getInetAddress().getHostAddress() + " connected.");
+//            ois = new ObjectInputStream(client.getInputStream());
+//            oos = new ObjectOutputStream(client.getOutputStream());
         }else{
             System.out.println("Starting Client on this machine...");
 
@@ -74,11 +77,14 @@ public class PongWorld extends World{
             addObject(remote, BALL_WALL_OFFSET, getHeight()/2);
 
 
-            client = new Socket(ip, port);
-            client.setTcpNoDelay(true);
-
-            this.oos = new ObjectOutputStream(client.getOutputStream());
-            this.ois = new ObjectInputStream(client.getInputStream());
+//            client = new Socket(ip, port);
+//            client.setTcpNoDelay(true);
+//
+//            this.oos = new ObjectOutputStream(client.getOutputStream());
+//            this.ois = new ObjectInputStream(client.getInputStream());
+            
+            this.clientConnection = new PongClientConnection(ip, port, true);
+            clientConnection.start();
         }
         
         
@@ -129,10 +135,10 @@ public class PongWorld extends World{
             addObject(booster, boosterX, boosterY);
         }
         showScoreboard(pointsHost, pointsClient);
-        PongClientData data = (PongClientData) ois.readObject(); // Daten vom client empfangen
-        oos.writeObject(new PongHostData(bat.getX(), bat.getY(), ball.getX(), ball.getY(), (booster != null ? booster.getX() : -1), (booster != null ? booster.getY() : -1),
+        PongClientData data = hostConnection.getMostRecent(); // Daten vom client empfangen
+        if(data == null) return;
+        hostConnection.sendUpdate(new PongHostData(bat.getX(), bat.getY(), ball.getX(), ball.getY(), (booster != null ? booster.getX() : -1), (booster != null ? booster.getY() : -1),
                 pointsHost, pointsClient)); // aktuelle Daten an Client senden
-        oos.flush();
         remote.setLocation(data.getX(), data.getY()); // Empfangene Daten vom Client anzeigen
     }
 
@@ -165,9 +171,9 @@ public class PongWorld extends World{
     }
 
     private void handleClientTasks() throws Exception{
-        oos.writeObject(new PongClientData(bat.getX(), bat.getY()));
-        oos.flush();
-        PongHostData data = (PongHostData) ois.readObject();
+        clientConnection.sendUpdate(new PongClientData(bat.getX(), bat.getY()));
+        PongHostData data = clientConnection.getRecentHostData();
+        if(data == null) return;
         this.ball.setLocation(data.getBallPos().x, data.getBallPos().y);
         this.remote.setLocation(data.getBatPos().x, data.getBatPos().y);
         
