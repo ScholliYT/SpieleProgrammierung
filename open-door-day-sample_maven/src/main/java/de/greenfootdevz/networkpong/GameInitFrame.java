@@ -1,5 +1,9 @@
 package de.greenfootdevz.networkpong;
 
+import de.greenfootdevz.networkpong.Network.NetworkConfig;
+import de.greenfootdevz.networkpong.Network.NetworkConfigManager;
+import de.greenfootdevz.networkpong.Network.NetworkingDevices;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;

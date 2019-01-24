@@ -1,5 +1,14 @@
-package de.greenfootdevz.networkpong;
+package de.greenfootdevz.networkpong.World;
 
+import de.greenfootdevz.networkpong.*;
+import de.greenfootdevz.networkpong.Actor.Ball;
+import de.greenfootdevz.networkpong.Actor.Bat;
+import de.greenfootdevz.networkpong.Actor.Booster;
+import de.greenfootdevz.networkpong.Actor.RemoteBat;
+import de.greenfootdevz.networkpong.Network.PongClientConnection;
+import de.greenfootdevz.networkpong.Network.PongClientData;
+import de.greenfootdevz.networkpong.Network.PongHostConnection;
+import de.greenfootdevz.networkpong.Network.PongHostData;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.World;

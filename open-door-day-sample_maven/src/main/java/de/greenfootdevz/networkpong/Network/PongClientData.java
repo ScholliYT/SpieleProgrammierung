@@ -1,4 +1,4 @@
-package de.greenfootdevz.networkpong;
+package de.greenfootdevz.networkpong.Network;
 
 import java.io.Serializable;
 
