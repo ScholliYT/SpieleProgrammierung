@@ -1,8 +1,12 @@
 #Greenfoot project file
 
 # Class definitions
-class.de.greenfootdevz.networkpong.PongWorld.image=world.png
-class.de.greenfootdevz.networkpong.Bat.image=actor.png
+class.de.greenfootdevz.networkpong.Ball.image=basketball.png
+class.de.greenfootdevz.networkpong.Bat.image=friendly_bat.png
+class.de.greenfootdevz.networkpong.Booster.image=boost.png
+class.de.greenfootdevz.networkpong.PongWorld.image=space.jpg
+class.de.greenfootdevz.networkpong.RemoteBat.image=enemy_bat.png
+
 
 # Editor Settings
 editor.fx.0.height=0
