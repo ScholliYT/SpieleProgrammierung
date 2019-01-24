@@ -1,2 +1,2 @@
 # SpieleProgrammierung
-Spieleprogrammierung 2018
+Kurs: Spieleprogrammierung 2018/2019 am RvW Dülmen.
