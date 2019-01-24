@@ -1,11 +1,11 @@
 #Greenfoot project file
 
 # Class definitions
-class.de.greenfootdevz.networkpong.Ball.image=basketball.png
-class.de.greenfootdevz.networkpong.Bat.image=friendly_bat.png
-class.de.greenfootdevz.networkpong.Booster.image=boost.png
-class.de.greenfootdevz.networkpong.PongWorld.image=space.jpg
-class.de.greenfootdevz.networkpong.RemoteBat.image=enemy_bat.png
+class.de.greenfootdevz.networkpong.Actor.Ball.image=basketball.png
+class.de.greenfootdevz.networkpong.Actor.Bat.image=friendly_bat.png
+class.de.greenfootdevz.networkpong.Actor.Booster.image=boost.png
+class.de.greenfootdevz.networkpong.World.PongWorld.image=space.jpg
+class.de.greenfootdevz.networkpong.Actor.RemoteBat.image=enemy_bat.png
 
 
 # Editor Settings
@@ -32,7 +32,7 @@ readme.y=10
 
 # Target definitions (unknown use)
 target1.height=50
-target1.name=de.greenfootdevz.networkpong.PongWorld
+target1.name=de.greenfootdevz.networkpong.World.PongWorld
 target1.showInterface=false
 target1.type=ClassTarget
 target1.typeParameters=
@@ -44,4 +44,4 @@ target1.y=0
 version=3.0.0
 
 # Misc
-world.lastInstantiated=de.greenfootdevz.networkpong.PongWorld
+world.lastInstantiated=de.greenfootdevz.networkpong.World.PongWorld

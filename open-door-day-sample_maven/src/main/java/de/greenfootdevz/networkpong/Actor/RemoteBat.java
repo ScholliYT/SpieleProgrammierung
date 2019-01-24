@@ -1,4 +1,4 @@
-package de.greenfootdevz.networkpong;
+package de.greenfootdevz.networkpong.Actor;
 
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot und MouseInfo)
 

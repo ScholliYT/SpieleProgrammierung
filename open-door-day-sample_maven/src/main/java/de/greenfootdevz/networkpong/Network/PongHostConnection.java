@@ -1,4 +1,6 @@
-package de.greenfootdevz.networkpong;
+package de.greenfootdevz.networkpong.Network;
+
+import de.greenfootdevz.networkpong.ExceptionDialog;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
