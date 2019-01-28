@@ -20,8 +20,12 @@ public class NetworkingDevices{
 		this.availableDevices = new HashMap<>();
 		int count = 0;
 		for(NetworkInterface i : Collections.list(interfaces)){
-			if(i != null && i.getInetAddresses().hasMoreElements()){
-				availableDevices.put(++count, i);
+			if(i == null) continue;
+			address : for(InetAddress add: Collections.list(i.getInetAddresses())){
+				if(add instanceof Inet4Address){
+					availableDevices.put(++count, i);
+					break address;
+				}
 			}
 		}
 	}
