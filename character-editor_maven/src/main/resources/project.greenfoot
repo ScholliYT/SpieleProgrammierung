@@ -4,7 +4,7 @@
 class.de.greenfootdevz.charactereditor.Actor.Ball.image=basketball.png
 class.de.greenfootdevz.charactereditor.Actor.Bat.image=friendly_bat.png
 class.de.greenfootdevz.charactereditor.Actor.Booster.image=boost.png
-class.de.greenfootdevz.charactereditor.World.PongWorld.image=space.jpg
+class.de.greenfootdevz.charactereditor.World.CharacterEditorWorld.image=space.jpg
 class.de.greenfootdevz.charactereditor.Actor.RemoteBat.image=enemy_bat.png
 
 
@@ -32,7 +32,7 @@ readme.y=10
 
 # Target definitions (unknown use)
 target1.height=50
-target1.name=de.greenfootdevz.charactereditor.World.PongWorld
+target1.name=de.greenfootdevz.charactereditor.World.CharacterEditorWorld
 target1.showInterface=false
 target1.type=ClassTarget
 target1.typeParameters=
@@ -44,4 +44,4 @@ target1.y=0
 version=3.0.0
 
 # Misc
-world.lastInstantiated=de.greenfootdevz.charactereditor.World.PongWorld
+world.lastInstantiated=de.greenfootdevz.charactereditor.World.CharacterEditorWorld
