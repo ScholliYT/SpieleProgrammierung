@@ -1,11 +1,7 @@
 #Greenfoot project file
 
 # Class definitions
-class.de.greenfootdevz.charactereditor.Actor.Ball.image=basketball.png
-class.de.greenfootdevz.charactereditor.Actor.Bat.image=friendly_bat.png
-class.de.greenfootdevz.charactereditor.Actor.Booster.image=boost.png
-class.de.greenfootdevz.charactereditor.World.CharacterEditorWorld.image=space.jpg
-class.de.greenfootdevz.charactereditor.Actor.RemoteBat.image=enemy_bat.png
+# class.de.greenfootdevz.charactereditor.World.CharacterEditorWorld.image=space.jpg
 
 
 # Editor Settings
