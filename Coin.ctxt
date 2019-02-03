@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Coin
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ coin\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=size\ color\ w\ values
+comment1.target=Coin(int,\ greenfoot.Color,\ greenfoot.World,\ int)
+comment1.text=\r\n\ Act\ -\ do\ whatever\ the\ coin\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+comment10.params=
+comment10.target=int\ auswertung()
+comment11.params=score
+comment11.target=void\ showEndscreen(int)
+comment2.params=
+comment2.target=int\ getValue()
+comment3.params=
+comment3.target=void\ showScore()
+comment4.params=
+comment4.target=int\ getSize()
+comment5.params=
+comment5.target=void\ act()
+comment6.params=
+comment6.target=greenfoot.Color\ getColor()
+comment7.params=color
+comment7.target=void\ setColor(greenfoot.Color)
+comment8.params=
+comment8.target=boolean\ isTouching()
+comment9.params=
+comment9.target=greenfoot.Color\ getZustand()
+numComments=12
