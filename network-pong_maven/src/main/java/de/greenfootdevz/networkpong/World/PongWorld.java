@@ -11,12 +11,14 @@ import de.greenfootdevz.networkpong.Network.PongHostConnection;
 import de.greenfootdevz.networkpong.Network.PongHostData;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootSound;
 import greenfoot.World;
 
 import java.net.InetAddress;
 import java.util.Random;
 
 public class PongWorld extends World{
+    public static final int BALL_SPEED_X = 5;
 
 //    private ServerSocket host;
 //    private Socket client;
@@ -116,9 +118,11 @@ public class PongWorld extends World{
         if(ball.getX() < ball.getImage().getWidth()/2){ //Punkt für client
             resetBall();
             pointsClient++;
+            Greenfoot.playSound("pong_8bit_scorepoint.wav");
         }else if(ball.getX() > getWidth() - ball.getImage().getWidth()/2){ //Punkt für host
             resetBall();
             pointsHost++;
+            Greenfoot.playSound("pong_8bit_scorepoint.wav");
         }else if(ball.getIntesecting(Bat.class) != null){ //Host trifft ball
            handleBatHit(bat);
         }else if(ball.getIntesecting(RemoteBat.class) != null){ //Client trifft
@@ -127,10 +131,12 @@ public class PongWorld extends World{
             removeObject(booster);
             booster = null;
             dx += 1;
-        }else{ //Ball fliegt einfach weiter (Bounce oben / unten)
+            Greenfoot.playSound("sfx_sounds_powerup2.wav");
+        }else{ //Ball fliegt einfach weiter
             ball.setLocation(ball.getX() + dx, ball.getY() + dy);
-            if(ball.getY() <= ball.getImage().getHeight()/2 || ball.getY() >= getHeight() - ball.getImage().getHeight()/2){
+            if(ball.getY() <= ball.getImage().getHeight()/2 || ball.getY() >= getHeight() - ball.getImage().getHeight()/2){ // (Bounce oben / unten)
                 dy = -dy;
+                Greenfoot.playSound("pong_8bit_hitwall.wav");
             }
         }
         
@@ -159,6 +165,7 @@ public class PongWorld extends World{
     }
     
     private void handleBatHit(Actor bat){
+        Greenfoot.playSound("pong_8bit_hitpaddle.wav");
         // TODO: use current dy of the bat / ball to calculate new dx/dy;
         dx = -dx;
         dy = (ball.getY() - bat.getY()) / 2;
@@ -173,7 +180,7 @@ public class PongWorld extends World{
 
     private void resetBall(){
        ball.setLocation(getWidth()/2, getHeight()/2);
-       dx = r.nextBoolean() ? 3 : -3; // randomly choose starting direction on x-Axis
+       dx = (r.nextBoolean() ? BALL_SPEED_X : -BALL_SPEED_X); // randomly choose starting direction on x-Axis
        dy = 0;
     }
 
