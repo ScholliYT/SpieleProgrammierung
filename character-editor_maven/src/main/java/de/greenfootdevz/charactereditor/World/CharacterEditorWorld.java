@@ -1,7 +1,5 @@
 package de.greenfootdevz.charactereditor.World;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import de.greenfootdevz.charactereditor.Actor.Ball;
 import de.greenfootdevz.charactereditor.Actor.BodyPart;
 import de.greenfootdevz.charactereditor.ExceptionDialog;
 import greenfoot.Greenfoot;
@@ -12,13 +10,9 @@ import greenfoot.util.GreenfootUtil;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
-import java.rmi.server.ExportException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static greenfoot.Greenfoot.isKeyDown;
 
@@ -58,15 +52,14 @@ public class CharacterEditorWorld extends World {
         Greenfoot.start();
     }
 
-    private GreenfootImage[] getBodyPartImages(String name) {
+    private GreenfootImage[] getBodyPartImages(String partName) {
         URL bodyPartRoot = null;
         try {
-            bodyPartRoot = GreenfootUtil.getURL("body_parts/" + name, "images");
+            bodyPartRoot = GreenfootUtil.getURL("body_parts/" + partName, "images");
         } catch (FileNotFoundException e1) {
             new ExceptionDialog(e1);
         }
-        File bodyPartRootFile = new File(bodyPartRoot.getPath());
-
+        File bodyPartRootFile = new File(bodyPartRoot.getPath().replaceAll("%20", " ")); //Anscheinend gibt es ein Problem mit Leerzeichen im Pfad
         if (!bodyPartRootFile.isDirectory()) {
             try {
                 throw new IOException("Directory: " + bodyPartRoot.getPath() + " was not found.");
@@ -76,11 +69,8 @@ public class CharacterEditorWorld extends World {
         }
 
 
-        File[] bodyPartImages = bodyPartRootFile.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".png") || name.endsWith(".jpg");
-            }
+        File[] bodyPartImages = bodyPartRootFile.listFiles((dir, name) -> {
+        	return name.endsWith(".png") || name.endsWith(".jpg");
         });
 
         if (bodyPartImages == null) {
@@ -95,7 +85,7 @@ public class CharacterEditorWorld extends World {
         int n = bodyPartImages.length;
         GreenfootImage[] images = new GreenfootImage[n];
         for (int i = 0; i < n; i++) {
-            images[i] = new GreenfootImage("body_parts/" + name + "/" + bodyPartImages[i].getName());
+            images[i] = new GreenfootImage("body_parts/" + partName + "/" + bodyPartImages[i].getName());
         }
         return images;
     }
@@ -105,7 +95,7 @@ public class CharacterEditorWorld extends World {
         BodyPart bodyPart = null;
         try {
             bodyPart = new BodyPart(name, getBodyPartImages(name), offset);
-        } catch (InvalidArgumentException e1) {
+        } catch (IllegalArgumentException e1) {
             new ExceptionDialog(e1);
         }
         return bodyPart;

@@ -1,12 +1,7 @@
 package de.greenfootdevz.charactereditor.Actor;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import greenfoot.*;
-
 import java.awt.*;
-
-import static greenfoot.Greenfoot.isKeyDown;
 
 public class BodyPart extends Actor {
 
@@ -20,9 +15,9 @@ public class BodyPart extends Actor {
         return name;
     }
 
-    public BodyPart(@NotNull String name, @NotNull GreenfootImage[] images, Point offset) throws InvalidArgumentException {
+    public BodyPart(String name, GreenfootImage[] images, Point offset) throws IllegalArgumentException{
         if (images == null || images.length == 0) {
-            throw new InvalidArgumentException(new String[]{"images must be an array with at least one element"});
+            throw new IllegalArgumentException("images must be an array with at least one element");
         }
         this.name = name;
         this.images = images;
