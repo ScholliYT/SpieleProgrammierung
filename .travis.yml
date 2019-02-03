@@ -2,12 +2,15 @@ sudo: false
 language: java
 jdk: oraclejdk8
 env:
-- PROJECT_DIR=open-door-day-sample_maven
+- PROJECT_DIR=network-pong_maven
 - PROJECT_DIR=character-editor_maven
 cache:
   directories:
   - "$HOME/.m2"
-script: cd $PROJECT_DIR && mvn clean install -DskipTests=true && cp target/*-0.0.1-SNAPSHOT-jar-with-dependencies.jar target/$PROJECT_DIR.jar
+script: 
+- cd $PROJECT_DIR
+- mvn clean install -DskipTests=true 
+- cp target/*-0.0.1-SNAPSHOT-jar-with-dependencies.jar target/$PROJECT_DIR.jar
 deploy:
   provider: releases
   tag_name: "$TRAVIS_TAG"
