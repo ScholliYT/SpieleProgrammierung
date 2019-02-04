@@ -4,6 +4,7 @@ jdk: oraclejdk8
 env:
 - PROJECT_DIR=network-pong_maven
 - PROJECT_DIR=character-editor_maven
+- PROJECT_DIR=muenzspiel_maven
 cache:
   directories:
   - "$HOME/.m2"
