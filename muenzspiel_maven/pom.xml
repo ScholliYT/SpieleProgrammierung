@@ -2,15 +2,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>
-    de.greenfootdevz.networkpong
+    de.greenfootdevz.muenzspiel
   </groupId>
   <artifactId>
-    networkpong
+    muenzspiel
   </artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>
-    A network based 2 player implementation of Pong.
+  	Simple game with coins.
   </description>
 
   <properties>
@@ -57,7 +57,7 @@
           </excludes>
           <archive>
             <manifest>
-              <mainClass>de.greenfootdevz.networkpong.MainApp</mainClass>
+              <mainClass>de.greenfootdevz.muenzspiel.MainApp</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -67,7 +67,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>de.greenfootdevz.networkpong.MainApp</mainClass>
+              <mainClass>de.greenfootdevz.muenzspiel.MainApp</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
