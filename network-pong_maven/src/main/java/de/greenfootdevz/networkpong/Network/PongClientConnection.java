@@ -24,7 +24,7 @@ public class PongClientConnection extends Thread{
 			boolean autoconnect) throws IOException{
 		this.address = address;
 		this.port = port;
-		this.mostRecentData = new PongHostData(0, 0, 0, 0, -1, -1, 0, 0);
+		this.mostRecentData = new PongHostData(0, 0, 0, 0, -1, -1, 0, 0, "");
 		if(autoconnect){
 			connect();
 		}
