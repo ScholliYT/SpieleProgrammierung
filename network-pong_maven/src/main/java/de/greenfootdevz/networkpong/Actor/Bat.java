@@ -9,7 +9,9 @@ import static greenfoot.Greenfoot.isKeyDown;
  *
  */
 public class Bat extends Actor{
-    
+
+    private final int BAT_SPEED_Y = 5;
+
     public Bat(){
 
     }
@@ -19,9 +21,9 @@ public class Bat extends Actor{
         int x = getX();
         int y = getY();
         if(up && !down){
-            y -= 3;
+            y -= BAT_SPEED_Y;
         }else if(!up && down){
-            y += 3;
+            y += BAT_SPEED_Y;
         }
         moveToIfPossible(x, y);
     }

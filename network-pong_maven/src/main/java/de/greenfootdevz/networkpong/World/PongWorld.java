@@ -18,7 +18,6 @@ import java.net.InetAddress;
 import java.util.Random;
 
 public class PongWorld extends World{
-    public static final int BALL_SPEED_X = 5;
 
 //    private ServerSocket host;
 //    private Socket client;
@@ -33,20 +32,21 @@ public class PongWorld extends World{
     private Ball ball;
     private Bat bat;
     private RemoteBat remote;
-    
+
     private Random r;
-    
+
     private int dx, dy;
     private int pointsHost, pointsClient;
-    
+
     private PongClientConnection clientConnection;
     private PongHostConnection hostConnection;
-    
+
     private final int BALL_WALL_OFFSET = 20;
-    private final int BALL_MAX_SPEED_Y = 2;
+    public static final int BALL_SPEED_X = 6;
+    private final int BALL_MAX_SPEED_Y = 3;
     
     public PongWorld() throws Exception{
-        super(1000, 500, 1);
+        super(1200, 900, 1);
         
         //exception(null); //Throws exception in order to test dialog
         
