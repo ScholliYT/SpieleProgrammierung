@@ -23,13 +23,6 @@ public class CharacterEditorWorld extends World {
     private long lastButtonPressed = 0;
     private final long BUTTON_PRESS_DELAY = 300;
 
-    private void addBodyPartIfPossible(ArrayList<BodyPart> bodyParts, String bodyPartName, int xoffset, int yoffset) {
-        BodyPart bodyPart = initializeBodyPart(bodyPartName, new Point(xoffset, yoffset));
-        if (bodyPart != null) {
-            bodyParts.add(bodyPart);
-        }
-    }
-
     public CharacterEditorWorld() {
         super(1000, 800, 1);
 
@@ -39,7 +32,7 @@ public class CharacterEditorWorld extends World {
         addBodyPartIfPossible(bodyParts, "mouth", 0, -170);
         addBodyPartIfPossible(bodyParts, "nose", 0, -200);
         addBodyPartIfPossible(bodyParts, "eyes", 0, -215);
-        addBodyPartIfPossible(bodyParts, "hair/Farbe", 0, -240);
+        addBodyPartIfPossible(bodyParts, "hair", 0, -240);
 
         this.bodyParts = bodyParts.toArray(new BodyPart[0]);
 
@@ -52,10 +45,18 @@ public class CharacterEditorWorld extends World {
         Greenfoot.start();
     }
 
+    private void addBodyPartIfPossible(ArrayList<BodyPart> bodyParts, String bodyPartName, int xoffset, int yoffset) {
+        BodyPart bodyPart = initializeBodyPart(bodyPartName, new Point(xoffset, yoffset));
+        if (bodyPart != null) {
+            bodyParts.add(bodyPart);
+        }
+    }
+
     private GreenfootImage[] getBodyPartImages(String partName) {
+
         URL bodyPartRoot = null;
         try {
-            bodyPartRoot = GreenfootUtil.getURL("body_parts/" + partName, "images");
+            bodyPartRoot = GreenfootUtil.getURL("", "images");
         } catch (FileNotFoundException e1) {
             new ExceptionDialog(e1);
         }
@@ -69,9 +70,7 @@ public class CharacterEditorWorld extends World {
         }
 
 
-        File[] bodyPartImages = bodyPartRootFile.listFiles((dir, name) -> {
-        	return name.endsWith(".png") || name.endsWith(".jpg");
-        });
+        File[] bodyPartImages = bodyPartRootFile.listFiles((dir, name) -> name.startsWith(partName) && (name.endsWith(".png") || name.endsWith(".jpg")));
 
         if (bodyPartImages == null) {
             try {
@@ -85,7 +84,7 @@ public class CharacterEditorWorld extends World {
         int n = bodyPartImages.length;
         GreenfootImage[] images = new GreenfootImage[n];
         for (int i = 0; i < n; i++) {
-            images[i] = new GreenfootImage("body_parts/" + partName + "/" + bodyPartImages[i].getName());
+            images[i] = new GreenfootImage(bodyPartImages[i].getName());
         }
         return images;
     }
