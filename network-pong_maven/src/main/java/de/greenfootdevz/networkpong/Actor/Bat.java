@@ -10,7 +10,7 @@ import static greenfoot.Greenfoot.isKeyDown;
  */
 public class Bat extends Actor{
 
-    private final int BAT_SPEED_Y = 5;
+    private final int BAT_SPEED_Y = 8;
 
     public Bat(){
 
