@@ -58,6 +58,8 @@ public class PongWorld extends World {
 
         this.r = new Random();
 
+        addObject(new FPSCounter(), getWidth() - 50, getHeight() - 50);
+
         this.bat = new Bat();
         this.remoteBat = new RemoteBat();
         this.ball = new Ball();
