@@ -30,7 +30,7 @@ public class PongWorld extends World {
     private Booster booster;
     private Ball ball;
     private Bat bat;
-    private RemoteBat remote;
+    private RemoteBat remoteBat;
 
     private Random r;
 
@@ -42,7 +42,7 @@ public class PongWorld extends World {
 
     private final int BAT_WALL_OFFSET = 20;
     private final int BALL_SPEED = 8;
-    private final double BALL_MAX_BOUNCE_ANGLE = 5*Math.PI / 12;
+    private final double BALL_MAX_BOUNCE_ANGLE = 5 * Math.PI / 12; // i.e. 75° (degrees)
 
     public PongWorld() throws Exception {
         super(800, 600, 1);
@@ -59,16 +59,16 @@ public class PongWorld extends World {
         this.r = new Random();
 
         this.bat = new Bat();
-        this.remote = new RemoteBat();
+        this.remoteBat = new RemoteBat();
         this.ball = new Ball();
-        addObject(ball, getWidth() / 2, getHeight() / 2);
-        resetBall();
+        addObject(ball, 0, 0); // Spawn the ball
+        resetBall(); // move the ball bot he desired starting point
 
         if (isHost) {
             System.out.println("Starting Host on this machine...");
 
             addObject(bat, BAT_WALL_OFFSET, getHeight() / 2);
-            addObject(remote, getWidth() - BAT_WALL_OFFSET, getHeight() / 2);
+            addObject(remoteBat, getWidth() - BAT_WALL_OFFSET, getHeight() / 2);
 
 
             this.hostConnection = new PongHostConnection(ip, 50, port, true);
@@ -82,7 +82,7 @@ public class PongWorld extends World {
             System.out.println("Starting Client on this machine...");
 
             addObject(bat, getWidth() - BAT_WALL_OFFSET, getHeight() / 2);
-            addObject(remote, BAT_WALL_OFFSET, getHeight() / 2);
+            addObject(remoteBat, BAT_WALL_OFFSET, getHeight() / 2);
 
 
 //            client = new Socket(ip, port);
@@ -120,13 +120,14 @@ public class PongWorld extends World {
         String currentSoundFile = "";
 
         // Top and bottom edges -> bounce
-        if (newBallY - ballRadius < 0) {
+        // TODO: consider ballradius
+        if (newBallY < 0) { // top
             newBallY = -newBallY;
             dy = -dy;
             currentSoundFile = "pong_8bit_hitwall.wav";
-        } else if (newBallY + ballRadius > getHeight() - 1) {
-            // newBallY -= 2 * ((newBallY + ballRadius) - (getHeight() - 1));
-            newBallY = getHeight() - 1 + newBallY;
+        } else if (newBallY > getHeight() - 1) { // bottom
+            newBallY -= 2 * ((newBallY + ballRadius) - (getHeight() - 1));
+            //newBallY = getHeight() - 1 + newBallY;
             dy = -dy;
             currentSoundFile = "pong_8bit_hitwall.wav";
         }
@@ -151,52 +152,55 @@ public class PongWorld extends World {
         // _/j  L l\_!  _//^---^\\_
 
         // Host (left)
-        if (newBallX < BAT_WALL_OFFSET + bat.getImage().getWidth() / 2 && ball.getActualX() >= BAT_WALL_OFFSET + bat.getImage().getWidth() / 2) {
+        if (newBallX < BAT_WALL_OFFSET + bat.getImage().getWidth() / 2 && ball.getActualX() >= BAT_WALL_OFFSET + bat.getImage().getWidth() / 2) { // ball moved over the left paddle Y-Axis
             double intersectX = BAT_WALL_OFFSET + bat.getImage().getWidth() / 2.0; // this is constant
-            double intersectY = ball.getActualY() - ((ball.getActualX() - (BAT_WALL_OFFSET + bat.getImage().getWidth() / 2.0)) * (ball.getActualY() - newBallY)) / (ball.getActualX() - newBallX); // TODO: wtf?
+            double intersectY = ball.getActualY() - ((ball.getActualX() - (BAT_WALL_OFFSET + bat.getImage().getWidth() / 2.0)) * (ball.getActualY() - newBallY)) / (ball.getActualX() - newBallX); // use slope and length to calculate exact intersect with Y-Axis of the paddle
 
             // check for hit
-            if (intersectY >= bat.getY() - bat.getImage().getHeight() / 2 && intersectY <= bat.getY() + bat.getImage().getHeight() / 2) {
-                double relativeIntersectY = bat.getY() - intersectY;
-                double bounceAngle = (relativeIntersectY / bat.getImage().getHeight() / 2) * (BALL_MAX_BOUNCE_ANGLE);
+            int upperBorderPaddle = bat.getY() - bat.getImage().getHeight() / 2;
+            int lowerBorderPaddle = bat.getY() + bat.getImage().getHeight() / 2;
+            // TODO: take care of intersect with non center part of the ball (i.e. consider ballradius) .... WIP
+            if (intersectY + ballRadius >= upperBorderPaddle && intersectY - ballRadius <= lowerBorderPaddle) { // collision happened with the paddle
+                double relativeIntersectY = bat.getY() - intersectY; // distance of intersection from center
+                double normalizedIntersectY = relativeIntersectY / (bat.getImage().getHeight() / 2.0); // normalize relativeIntersectY (careful: relativeIntersectY could be be larger (bat.getImage().getHeight() / 2) in the case of a outer texture of the ball intersecting with the paddle)
+                double bounceAngle = normalizedIntersectY * (BALL_MAX_BOUNCE_ANGLE);
 
                 double ballSpeed = Math.sqrt(dx * dx + dy * dy); // pythagoras
-                // double ballTravelLeft = (newBallY - intersectY) / (newBallY - ball.getActualY());
 
-                dx = BALL_SPEED * Math.cos(bounceAngle);
-                dy = BALL_SPEED * -Math.sin(bounceAngle);
+                double remainingTravelPercentage = Math.sqrt(Math.pow(intersectX - newBallX, 2) + Math.pow(intersectY - newBallY, 2)) / Math.sqrt(Math.pow(ball.getActualX() - newBallX, 2) + Math.pow(ball.getActualY() - newBallY, 2)); // calculate remaining travel distance with pythagoras
+                dx = ballSpeed * Math.cos(bounceAngle);
+                dy = ballSpeed * -Math.sin(bounceAngle);
 
-                // newBallX = intersectX + ballTravelLeft * ballSpeed * Math.cos(bounceAngle);
-                // newBallY = intersectY + ballTravelLeft * ballSpeed * Math.sin(bounceAngle);
-
-                newBallX = intersectX + ballSpeed * Math.cos(bounceAngle);
-                newBallY = intersectY + ballSpeed * Math.sin(bounceAngle);
+                newBallX = intersectX + remainingTravelPercentage * ballSpeed * Math.cos(bounceAngle);
+                newBallY = intersectY + remainingTravelPercentage * ballSpeed * Math.sin(bounceAngle);
 
                 currentSoundFile = "pong_8bit_hitpaddle.wav";
             }
         }
 
         // Remote (right)
-        if (newBallX > getWidth() - BAT_WALL_OFFSET - remote.getImage().getWidth() / 2 && ball.getActualX() <= getWidth() - BAT_WALL_OFFSET - bat.getImage().getWidth() / 2) {
-            double intersectX = getWidth() - BAT_WALL_OFFSET - remote.getImage().getWidth() / 2.0; // this is constant
-            double intersectY = ball.getActualY() - ((ball.getActualX() - (getWidth() - BAT_WALL_OFFSET - remote.getImage().getWidth() / 2)) * (ball.getActualY() - newBallY)) / (ball.getActualX() - newBallX); // TODO: wtf?
+        if (newBallX > getWidth() - BAT_WALL_OFFSET - remoteBat.getImage().getWidth() / 2 && ball.getActualX() <= getWidth() - BAT_WALL_OFFSET - bat.getImage().getWidth() / 2) {
+            double intersectX = getWidth() - BAT_WALL_OFFSET - remoteBat.getImage().getWidth() / 2.0; // this is constant
+            double intersectY = ball.getActualY() - ((ball.getActualX() - (getWidth() - BAT_WALL_OFFSET - remoteBat.getImage().getWidth() / 2)) * (ball.getActualY() - newBallY)) / (ball.getActualX() - newBallX);
 
             // check for hit
-            if (intersectY >= remote.getY() - remote.getImage().getHeight() / 2 && intersectY <= remote.getY() + remote.getImage().getHeight() / 2) {
-                double relativeIntersectY = remote.getY() - intersectY;
-                double bounceAngle = (relativeIntersectY / remote.getImage().getHeight() / 2) * (BALL_MAX_BOUNCE_ANGLE);
+            if (intersectY + ballRadius >= remoteBat.getY() - remoteBat.getImage().getHeight() / 2 && intersectY - ballRadius <= remoteBat.getY() + remoteBat.getImage().getHeight() / 2) {
+                double relativeIntersectY = remoteBat.getY() - intersectY;
+                double normalizedIntersectY = relativeIntersectY / (remoteBat.getImage().getHeight() / 2.0);
+                double bounceAngle = normalizedIntersectY * (BALL_MAX_BOUNCE_ANGLE);
+                System.out.println("remoteBat.getY(): " + remoteBat.getY());
+                System.out.println("intersectY: " + intersectY);
+                System.out.println("normalizedIntersectY: " + normalizedIntersectY);
+                System.out.println("BounceAngle: " + (bounceAngle/Math.PI)*180);
 
                 double ballSpeed = Math.sqrt(dx * dx + dy * dy); // pythagoras
-//                double ballTravelLeft = (newBallY - intersectY) / (newBallY - ball.getActualY());
+                double remainingTravelPercentage = Math.sqrt(Math.pow(intersectX - newBallX, 2) + Math.pow(intersectY - newBallY, 2)) / Math.sqrt(Math.pow(ball.getActualX() - newBallX, 2) + Math.pow(ball.getActualY() - newBallY, 2)); // calculate remaining travel distance with pythagoras
 
-                dx = BALL_SPEED * Math.cos(bounceAngle) * -1;
-                dy = BALL_SPEED * Math.sin(bounceAngle) * -1;
+                dx = ballSpeed * Math.cos(bounceAngle) * -1;
+                dy = ballSpeed * Math.sin(bounceAngle) * -1;
 
-//                newBallX = intersectX - ballTravelLeft * ballSpeed * Math.cos(bounceAngle);
-//                newBallY = intersectY - ballTravelLeft * ballSpeed * Math.sin(bounceAngle);
-
-                newBallX = intersectX - ballSpeed * Math.cos(bounceAngle);
-                newBallY = intersectY - ballSpeed * Math.sin(bounceAngle);
+                newBallX = intersectX - remainingTravelPercentage * ballSpeed * Math.cos(bounceAngle);
+                newBallY = intersectY - remainingTravelPercentage * ballSpeed * Math.sin(bounceAngle);
 
                 currentSoundFile = "pong_8bit_hitpaddle.wav";
             }
@@ -216,29 +220,12 @@ public class PongWorld extends World {
             ball.setLocation(newBallX, newBallY);
         }
 
-
-//        if (ball.getX() < ball.getImage().getWidth() / 2) {
-//        //if (newBallX - ball.getImage().getWidth() / 2 < bat.getImage().getWidth() / 2 + BAT_WALL_OFFSET) { //Punkt für client
-//            resetBall();
-//            pointsClient++;
-//            currentSoundFile = "pong_8bit_scorepoint.wav";
-//
-//        } else if (ball.getX() > getWidth() - ball.getImage().getWidth() / 2) { //Punkt für host
-//            resetBall();
-//            pointsHost++;
-//            currentSoundFile = "pong_8bit_scorepoint.wav";
-//        }
-
-
-
-
         // ############################################################################################################
         // # Post processing                                                                                          #
         // ############################################################################################################
 
         // TODO: activate sound
-        currentSoundFile = "";
-        if (!"".equals(currentSoundFile)) {
+        if (!"".equals(currentSoundFile) && false) {
             Greenfoot.playSound(currentSoundFile);
         }
 
@@ -254,7 +241,7 @@ public class PongWorld extends World {
         if (data == null) return;
         hostConnection.sendUpdate(new PongHostData(bat.getX(), bat.getY(), ball.getX(), ball.getY(), (booster != null ? booster.getX() : -1), (booster != null ? booster.getY() : -1),
                 pointsHost, pointsClient, currentSoundFile)); // aktuelle Daten an Client senden
-        remote.setLocation(data.getX(), data.getY()); // Empfangene Daten vom Client anzeigen
+        remoteBat.setLocation(data.getX(), data.getY()); // Empfangene Daten vom Client anzeigen
     }
 
     /*
@@ -288,7 +275,7 @@ public class PongWorld extends World {
     private void resetBall() {
         ball.setLocation(getWidth() / 2, getHeight() / 2);
         dx = (r.nextBoolean() ? BALL_SPEED : -BALL_SPEED); // randomly choose starting direction on x-Axis
-        dy = 0;
+        dy = (r.nextBoolean() ? 1: -1) * (1.0/1000); // Give ball some initial movement on y-axis
     }
 
     private void handleClientTasks() throws Exception {
@@ -296,7 +283,7 @@ public class PongWorld extends World {
         PongHostData data = clientConnection.getRecentHostData();
         if (data == null) return;
         this.ball.setLocation(data.getBallPos().x, data.getBallPos().y);
-        this.remote.setLocation(data.getBatPos().x, data.getBatPos().y);
+        this.remoteBat.setLocation(data.getBatPos().x, data.getBatPos().y);
 
         if (!data.getCurrentSoundFile().equals("")) { // Play the current soundfile if there is one
             Greenfoot.playSound(data.getCurrentSoundFile());
