@@ -1,7 +1,8 @@
 #Greenfoot project file
 
 # Class definitions
-# class.de.greenfootdevz.muenzspiel.World.Space.image=space.jpg
+class.de.greenfootdevz.muenzspiel.World.Space.image=hintergrund_platte_fliesen.png
+class.de.greenfootdevz.muenzspiel.Actor.Coin.image=muenzeEinsGelb.png
 
 
 # Editor Settings
