@@ -1,22 +1,14 @@
 package de.greenfootdevz.networkpong;
 
-import de.greenfootdevz.networkpong.Network.NetworkConfig;
-import de.greenfootdevz.networkpong.Network.NetworkConfigManager;
-import de.greenfootdevz.networkpong.Network.NetworkingDevices;
-
+import de.greenfootdevz.networkpong.Network.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.awt.event.*;
+import java.net.*;
+import java.util.*;
 
-public class GameInitFrame extends JFrame {
+public class GameInitFrame extends JFrame{
 
     private static final long serialVersionUID = -3194927350783500407L;
     private final NetworkConfig networkConfig;
@@ -38,22 +30,22 @@ public class GameInitFrame extends JFrame {
     private NetworkingDevices networking;
 
 
-    public GameInitFrame() throws Exception {
+    public GameInitFrame() throws Exception{
         this.networkConfig = NetworkConfigManager.getConfig("networkconfig.xml");
 
         System.out.println("Using NetworkConfig: \n" + networkConfig.toString());
 
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter(){
             @Override
-            public void windowClosed(WindowEvent e) {
+            public void windowClosed(WindowEvent e){
                exit();
             }
         });
         setResizable(false);
         setTitle("Netzwerkpong - Starteinstellungen");
-        setBounds(100, 100, 450, 224);
+        setBounds(100, 100, 450, 293);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -65,7 +57,7 @@ public class GameInitFrame extends JFrame {
         panelClient.setLayout(null);
 
         JLabel lblHostaddress = new JLabel("Hostadresse:");
-        lblHostaddress.setBounds(10, 21, 64, 14);
+        lblHostaddress .setBounds(10, 21, 64, 14);
         panelClient.add(lblHostaddress);
 
         cbIpClient = new JComboBox<>();
@@ -170,21 +162,21 @@ public class GameInitFrame extends JFrame {
         panelHostoptions.setBorder(new TitledBorder(null, "Hostoptionen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         panelHostoptions.setLayout(null);
 
-        JLabel lblNetzwerkinterface = new JLabel("Netzwerkinterface:");
-        lblNetzwerkinterface.setBounds(10, 21, 92, 14);
+        JLabel lblNetzwerkinterface = new JLabel("Netzwerkinterface");
+        lblNetzwerkinterface.setBounds(10, 21, 422, 14);
         panelHostoptions.add(lblNetzwerkinterface);
 
         cbNetworkInterfaces = new JComboBox<>();
-        cbNetworkInterfaces.setBounds(112, 18, 312, 20);
+        cbNetworkInterfaces.setBounds(10, 47, 422, 20);
         panelHostoptions.add(cbNetworkInterfaces);
 
-        JLabel lblPortHost = new JLabel("Port:");
-        lblPortHost.setBounds(10, 46, 92, 14);
+        JLabel lblPortHost = new JLabel("Port");
+        lblPortHost.setBounds(10, 79, 422, 14);
         panelHostoptions.add(lblPortHost);
 
         spinnerPortHost = new JSpinner();
         spinnerPortHost.setModel(new SpinnerNumberModel(networkConfig.getPort(), 0, 65535, 1));
-        spinnerPortHost.setBounds(112, 43, 62, 20);
+        spinnerPortHost.setBounds(10, 105, 422, 20);
         spinnerPortHost.addChangeListener(change -> this.selectedPort = (int) spinnerPortHost.getValue());
         panelHostoptions.add(spinnerPortHost);
 
@@ -235,7 +227,6 @@ public class GameInitFrame extends JFrame {
     }
 
     public boolean isHost() throws Exception {
-        // TODO: Was macht das hier? ~Tom
         while (isVisible()){
             Thread.sleep(1);
         }

@@ -49,8 +49,12 @@ public class PongHostData implements Serializable{
 		return pointHost;
 	}
 
-	public int getClientPoints(){ return pointClient; }
+	public int getClientPoints(){
+		return pointClient;
+	}
 
-	public String getCurrentSoundFile(){ return currentSoundFile; }
+	public String getCurrentSoundFile(){
+		return currentSoundFile;
+	}
 
 }

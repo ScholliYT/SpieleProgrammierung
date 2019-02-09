@@ -4,6 +4,7 @@ import de.greenfootdevz.networkpong.*;
 import de.greenfootdevz.networkpong.Actor.Ball;
 import de.greenfootdevz.networkpong.Actor.Bat;
 import de.greenfootdevz.networkpong.Actor.Booster;
+import de.greenfootdevz.networkpong.Actor.FPSCounter;
 import de.greenfootdevz.networkpong.Actor.RemoteBat;
 import de.greenfootdevz.networkpong.Network.PongClientConnection;
 import de.greenfootdevz.networkpong.Network.PongClientData;
@@ -41,7 +42,8 @@ public class PongWorld extends World {
     private PongHostConnection hostConnection;
 
     private final int BAT_WALL_OFFSET = 20;
-    private final int BALL_SPEED = 8;
+    private int BALL_SPEED = 4; //Double verwenden, und so die geschwindigkeit nur um 0.25 anhöhen, anstatt 1, oder je nach eingesammelten Boostern?
+    private final int MAX_BALL_SPEED = 12;
     private final double BALL_MAX_BOUNCE_ANGLE = 5 * Math.PI / 12; // i.e. 75° (degrees)
 
     public PongWorld() throws Exception {
@@ -190,10 +192,10 @@ public class PongWorld extends World {
                 double relativeIntersectY = remoteBat.getY() - intersectY;
                 double normalizedIntersectY = relativeIntersectY / (remoteBat.getImage().getHeight() / 2.0);
                 double bounceAngle = normalizedIntersectY * (BALL_MAX_BOUNCE_ANGLE);
-                System.out.println("remoteBat.getY(): " + remoteBat.getY());
-                System.out.println("intersectY: " + intersectY);
-                System.out.println("normalizedIntersectY: " + normalizedIntersectY);
-                System.out.println("BounceAngle: " + (bounceAngle/Math.PI)*180);
+//                System.out.println("remoteBat.getY(): " + remoteBat.getY());
+//                System.out.println("intersectY: " + intersectY);
+//                System.out.println("normalizedIntersectY: " + normalizedIntersectY);
+//                System.out.println("BounceAngle: " + (bounceAngle/Math.PI)*180);
 
                 double ballSpeed = Math.sqrt(dx * dx + dy * dy); // pythagoras
                 double remainingTravelPercentage = Math.sqrt(Math.pow(intersectX - newBallX, 2) + Math.pow(intersectY - newBallY, 2)) / Math.sqrt(Math.pow(ball.getActualX() - newBallX, 2) + Math.pow(ball.getActualY() - newBallY, 2)); // calculate remaining travel distance with pythagoras
@@ -227,7 +229,7 @@ public class PongWorld extends World {
         // ############################################################################################################
 
         // TODO: activate sound
-        if (!"".equals(currentSoundFile) && false) {
+        if (!"".equals(currentSoundFile)) {
             Greenfoot.playSound(currentSoundFile);
         }
 
@@ -241,6 +243,16 @@ public class PongWorld extends World {
         showScoreboard(pointsHost, pointsClient);
         PongClientData data = hostConnection.getMostRecent(); // Daten vom client empfangen
         if (data == null) return;
+        if(ball.getIntesecting(Booster.class) != null){
+        	if(BALL_SPEED >= MAX_BALL_SPEED){
+        		System.out.println("BALL_SPEED was not increased because its maximum was reached!");
+        	}else{
+        		this.BALL_SPEED++;
+            	System.out.println("BALL_SPEED increased to " + BALL_SPEED);
+            	removeObject(booster);
+            	this.booster = null;
+        	}
+        }
         hostConnection.sendUpdate(new PongHostData(bat.getX(), bat.getY(), ball.getX(), ball.getY(), (booster != null ? booster.getX() : -1), (booster != null ? booster.getY() : -1),
                 pointsHost, pointsClient, currentSoundFile)); // aktuelle Daten an Client senden
         remoteBat.setLocation(data.getX(), data.getY()); // Empfangene Daten vom Client anzeigen
@@ -277,7 +289,7 @@ public class PongWorld extends World {
     private void resetBall() {
         ball.setLocation(getWidth() / 2, getHeight() / 2);
         dx = (r.nextBoolean() ? BALL_SPEED : -BALL_SPEED); // randomly choose starting direction on x-Axis
-        dy = (r.nextBoolean() ? 1: -1) * (1.0/1000); // Give ball some initial movement on y-axis
+        dy = (r.nextBoolean() ? 1 : -1) * (1.0/1000); // Give ball some initial movement on y-axis
     }
 
     private void handleClientTasks() throws Exception {

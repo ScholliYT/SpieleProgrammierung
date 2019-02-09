@@ -41,15 +41,6 @@ public class NetworkingDevices{
 		}
 	}
 	
-	public void printAvailableInterfaces(PrintStream out) throws Exception{
-		out.format("%2s|%-50s|%-10s|%-20s\n", "ID", "Anzeigename", "Systemname", "Gerätaddresse");
-		for(Entry<Integer, NetworkInterface> entry: availableDevices.entrySet()){
-			NetworkInterface i = entry.getValue();
-			
-			out.format("%2d|%-50s|%-10s|%-20s\n", entry.getKey(), i.getDisplayName(), i.getName(), getIPv4AddressFor(i));
-		}
-	}
-	
 	public String[] getAvailableInterfaces() throws Exception{
 		String[] result = new String[availableDevices.size()];
 		for(int i = 1; i < result.length+1; i++){ //Erster Eintrag immer null!
