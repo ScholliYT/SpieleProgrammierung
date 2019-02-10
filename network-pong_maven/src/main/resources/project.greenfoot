@@ -1,7 +1,7 @@
 #Greenfoot project file
 
 # Class definitions
-class.de.greenfootdevz.networkpong.Actor.Ball.image=ball.png
+class.de.greenfootdevz.networkpong.Actor.Ball.image=ball_square_11x11.png
 class.de.greenfootdevz.networkpong.Actor.Bat.image=friendly_bat.png
 class.de.greenfootdevz.networkpong.Actor.Booster.image=boost.png
 class.de.greenfootdevz.networkpong.World.PongWorld.image=space.jpg

@@ -63,7 +63,7 @@ public class PongHostConnection extends Thread{
 					this.mostRecent = (PongClientData) o;
 				}
 			}catch(Exception e){
-				new ExceptionDialog(e).setVisible(true);
+				new ExceptionDialog(e);
 			}
 		}
 	}

@@ -4,6 +4,8 @@ jdk: oraclejdk8
 env:
 - PROJECT_DIR=network-pong_maven
 - PROJECT_DIR=character-editor_maven
+- PROJECT_DIR=muenzspiel_maven
+- PROJECT_DIR=fassspiel_maven
 cache:
   directories:
   - "$HOME/.m2"
@@ -15,7 +17,6 @@ deploy:
   provider: releases
   tag_name: "$TRAVIS_TAG"
   name: Spieleprogrammierung $TRAVIS_TAG
-  body: Automated release from Travis CI version $TRAVIS_TAG
   api_key:
     secure: pprvy7xUF7e5eEc7dQVsBTd6XBj+ik/O0rD6TVyBrUO9DhV0qYGAOXEjW4ck2oDRfYnsVkKhYL7s9oN87jHXAjHr/s1Z75KGTTmMU1t7YWJcUoU4/k40jdlMzqCjRQ2GaxCHEKhgjr0u0vg/oXZnNyaky3QGX6yprz1IegUWVZ5zWp2CBBZ8vqWPXdgSPXCRl3UNuDxVZXXQLOjV8QXHEOzunUyje04eylgI3G9BOqfAK6zdA6dBrYpF0cjKGB02dNgRURAvN51ssrADs4d/R8WI4nydv0wnu0ecucQQqF3GM6ZJ53gpX8TEohGx3tf1hC7oDY1j+8fhyysBafzv5uQpCGrIIBScGWL9PLpRKIULf20xIqFWUTKpxaRNuj5JITnEw/OkbWlL3X2lhN9vWWKDEetfPaD/o4coeeIGHlxHHvLhsrj9qPToXNJkVxOg7Q4YQLKfjHlOW4LfAgvS8PQ3ILgst9PyidM7E/LRutJDQve/S6BBlRVcFQq8/kIo4sWT3/l1BJ+Z5vPwaTBSjbeM/4ZixmS24/yUSOA8J5YJRKnT7dJFjQ8bjRNzpMkbgwuHWs0dyo9i/z2WHcZtWGA5qT2iUL2O4fNwFifOmnXWvWJ/LtWePFZJWkAEtNyU7JuE6+XEhJv49I9cd/OMOMjhAmN8e41uFebENraXcng=
   file: target/$PROJECT_DIR.jar
