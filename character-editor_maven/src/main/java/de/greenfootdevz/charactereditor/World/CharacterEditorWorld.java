@@ -18,32 +18,26 @@ import static greenfoot.Greenfoot.isKeyDown;
 
 public class CharacterEditorWorld extends World {
 
+    public static final String BODYPARTS_ROOTDIR = "bodyparts/";
     private final BodyPart[] bodyParts;
     private int currentBodyPartIndex;
     private long lastButtonPressed = 0;
     private final long BUTTON_PRESS_DELAY = 300;
-
-    private void addBodyPartIfPossible(ArrayList<BodyPart> bodyParts, String bodyPartName, int xoffset, int yoffset) {
-        BodyPart bodyPart = initializeBodyPart(bodyPartName, new Point(xoffset, yoffset));
-        if (bodyPart != null) {
-            bodyParts.add(bodyPart);
-        }
-    }
 
     public CharacterEditorWorld() {
         super(1000, 800, 1);
 
         ArrayList<BodyPart> bodyParts = new ArrayList<>();
         addBodyPartIfPossible(bodyParts, "body", 0, 0);
-        addBodyPartIfPossible(bodyParts, "head", 0, -200);
-        addBodyPartIfPossible(bodyParts, "mouth", 0, -170);
-        addBodyPartIfPossible(bodyParts, "nose", 0, -200);
-        addBodyPartIfPossible(bodyParts, "eyes", 0, -215);
-        addBodyPartIfPossible(bodyParts, "hair/Farbe", 0, -240);
+        addBodyPartIfPossible(bodyParts, "head", 0, 0);
+        addBodyPartIfPossible(bodyParts, "mouth", 0, 0);
+        addBodyPartIfPossible(bodyParts, "nose", 0, 0);
+        addBodyPartIfPossible(bodyParts, "eyes", 0, 0);
+        addBodyPartIfPossible(bodyParts, "hair", 0, 0);
 
         this.bodyParts = bodyParts.toArray(new BodyPart[0]);
 
-        Point generalOffset = new Point(200, 350);
+        Point generalOffset = new Point(200, 750/2 + 25);
         for (BodyPart bp : this.bodyParts) {
             addObject(bp, generalOffset.x + bp.getOffset().x, generalOffset.y + bp.getOffset().y);
         }
@@ -52,10 +46,17 @@ public class CharacterEditorWorld extends World {
         Greenfoot.start();
     }
 
+    private void addBodyPartIfPossible(ArrayList<BodyPart> bodyParts, String bodyPartName, int xoffset, int yoffset) {
+        BodyPart bodyPart = initializeBodyPart(bodyPartName, new Point(xoffset, yoffset));
+        if (bodyPart != null) {
+            bodyParts.add(bodyPart);
+        }
+    }
+
     private GreenfootImage[] getBodyPartImages(String partName) {
         URL bodyPartRoot = null;
         try {
-            bodyPartRoot = GreenfootUtil.getURL("body_parts/" + partName, "images");
+            bodyPartRoot = GreenfootUtil.getURL(BODYPARTS_ROOTDIR + partName, "images");
         } catch (FileNotFoundException e1) {
             new ExceptionDialog(e1);
         }
@@ -85,7 +86,7 @@ public class CharacterEditorWorld extends World {
         int n = bodyPartImages.length;
         GreenfootImage[] images = new GreenfootImage[n];
         for (int i = 0; i < n; i++) {
-            images[i] = new GreenfootImage("body_parts/" + partName + "/" + bodyPartImages[i].getName());
+            images[i] = new GreenfootImage(BODYPARTS_ROOTDIR + partName + "/" + bodyPartImages[i].getName());
         }
         return images;
     }
