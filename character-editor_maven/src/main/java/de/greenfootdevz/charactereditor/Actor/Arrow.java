@@ -1,18 +1,25 @@
 package de.greenfootdevz.charactereditor.Actor;
 
 import greenfoot.Actor;
+import greenfoot.Greenfoot;
 
 public class Arrow extends Actor {
 
-    public Arrow(boolean isLeft) {
-        if(isLeft) {
-            setImage("LeftArrow.png");
-        }else {
-            setImage("RightArrow.png");
+    private IClickEvent onClick;
+
+    public Arrow(boolean isLeft, IClickEvent onClick) {
+        if (isLeft) {
+            setImage("controls/leftarrow.png");
+        } else {
+            setImage("controls/rightarrow.png");
         }
+        this.onClick = onClick;
+
     }
 
     public void act() {
-
+        if (Greenfoot.mouseClicked(this)) {
+            onClick.execute();
+        }
     }
 }

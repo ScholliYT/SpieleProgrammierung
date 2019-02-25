@@ -1,6 +1,7 @@
 package de.greenfootdevz.charactereditor.World;
 
 import de.greenfootdevz.charactereditor.Actor.BodyPart;
+import de.greenfootdevz.charactereditor.Actor.BodyPartSelector;
 import de.greenfootdevz.charactereditor.ExceptionDialog;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
@@ -8,9 +9,7 @@ import greenfoot.World;
 import greenfoot.util.GreenfootUtil;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -30,17 +29,30 @@ public class CharacterEditorWorld extends World {
         ArrayList<BodyPart> bodyParts = new ArrayList<>();
         addBodyPartIfPossible(bodyParts, "body", 0, 0);
         addBodyPartIfPossible(bodyParts, "head", 0, 0);
-        addBodyPartIfPossible(bodyParts, "mouth", 0, 0);
-        addBodyPartIfPossible(bodyParts, "nose", 0, 0);
-        addBodyPartIfPossible(bodyParts, "eyes", 0, 0);
         addBodyPartIfPossible(bodyParts, "hair", 0, 0);
+        addBodyPartIfPossible(bodyParts, "eyes", 0, 0);
+        addBodyPartIfPossible(bodyParts, "nose", 0, 0);
+        addBodyPartIfPossible(bodyParts, "mouth", 0, 0);
 
         this.bodyParts = bodyParts.toArray(new BodyPart[0]);
 
-        Point generalOffset = new Point(200, 750/2 + 25);
-        for (BodyPart bp : this.bodyParts) {
+        // BodyPartSelector bpstest = new BodyPartSelector(this.bodyParts[0]);
+        // bpstest.addObjects(this, 500, 300);
+
+        Point generalOffset = new Point(200, 750 / 2 + 25);
+        BodyPart[] bodyParts1 = this.bodyParts;
+        for (int i = 0; i < bodyParts1.length; i++) {
+            BodyPart bp = bodyParts1[i];
             addObject(bp, generalOffset.x + bp.getOffset().x, generalOffset.y + bp.getOffset().y);
+
+
+            BodyPart bpclone = bp.clone();
+            bpclone.setPreview(true);
+            BodyPartSelector bps = new BodyPartSelector(bp.clone());
+            bps.addObjects(this, generalOffset.x + 300, 100 + i * 100);
         }
+
+
         currentBodyPartIndex = 0;
         System.out.println("Starting the Game!");
         Greenfoot.start();
@@ -53,7 +65,19 @@ public class CharacterEditorWorld extends World {
         }
     }
 
-    private GreenfootImage[] getBodyPartImages(String partName) {
+    private GreenfootImage[] getImages(String partName) {
+        return loadImages(partName, (dir, name) -> (name.endsWith(".png") || name.endsWith(".jpg")) && !name.endsWith("_prev.png") && !name.endsWith("_prev.jpg")
+        );
+    }
+
+    private GreenfootImage[] getPrevImages(String partName) {
+        return loadImages(partName, (dir, name) -> (name.endsWith(".png") || name.endsWith(".jpg")) && (name.endsWith("_prev.png") || name.endsWith("_prev.jpg"))
+        );
+    }
+
+
+
+    private GreenfootImage[] loadImages(String partName, FilenameFilter filefilter) {
         URL bodyPartRoot = null;
         try {
             bodyPartRoot = GreenfootUtil.getURL(BODYPARTS_ROOTDIR + partName, "images");
@@ -70,9 +94,8 @@ public class CharacterEditorWorld extends World {
         }
 
 
-        File[] bodyPartImages = bodyPartRootFile.listFiles((dir, name) -> {
-        	return name.endsWith(".png") || name.endsWith(".jpg");
-        });
+        File[] bodyPartImages = bodyPartRootFile.listFiles(filefilter);
+
 
         if (bodyPartImages == null) {
             try {
@@ -91,11 +114,11 @@ public class CharacterEditorWorld extends World {
         return images;
     }
 
-    private BodyPart initializeBodyPart(String name, Point offset) {
+    private BodyPart initializeBodyPart(String bodyPartName, Point offset) {
 
         BodyPart bodyPart = null;
         try {
-            bodyPart = new BodyPart(name, getBodyPartImages(name), offset);
+            bodyPart = new BodyPart(bodyPartName, getImages(bodyPartName), getPrevImages(bodyPartName), offset, false);
         } catch (IllegalArgumentException e1) {
             new ExceptionDialog(e1);
         }
@@ -123,18 +146,18 @@ public class CharacterEditorWorld extends World {
 
     private void previousBodyPart() {
         currentBodyPartIndex--;
-        if(currentBodyPartIndex <= 0) {
+        if (currentBodyPartIndex <= 0) {
             currentBodyPartIndex = bodyParts.length - 1;
         }
-        showText(bodyParts[currentBodyPartIndex].getName(), 500,500);
+        showText(bodyParts[currentBodyPartIndex].getName(), 500, 500);
     }
 
     private void nextBodyPart() {
         currentBodyPartIndex++;
-        if(currentBodyPartIndex >= bodyParts.length) {
+        if (currentBodyPartIndex >= bodyParts.length) {
             currentBodyPartIndex = 0;
         }
-        showText(bodyParts[currentBodyPartIndex].getName(), 500,500);
+        showText(bodyParts[currentBodyPartIndex].getName(), 500, 500);
     }
 
 }
