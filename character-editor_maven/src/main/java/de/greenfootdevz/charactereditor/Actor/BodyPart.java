@@ -16,6 +16,7 @@ public class BodyPart extends Actor implements Cloneable {
 
     public void setPreview(boolean val) {
         isPreview = val;
+        setCurrentImage();
     }
 
     public String getName() {
@@ -27,7 +28,7 @@ public class BodyPart extends Actor implements Cloneable {
             throw new IllegalArgumentException("images must be an array with at least one element");
         }
         if (images.length != prevImages.length) {
-            // throw new IllegalArgumentException("unequal amount of prev images: " + images.length + " " + prevImages.length);
+            throw new IllegalArgumentException("unequal amount of prev images: " + images.length + " " + prevImages.length);
         }
         this.name = name;
         this.images = images;

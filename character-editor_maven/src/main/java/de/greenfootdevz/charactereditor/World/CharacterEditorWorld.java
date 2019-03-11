@@ -45,14 +45,11 @@ public class CharacterEditorWorld extends World {
             BodyPart bp = bodyParts1[i];
             addObject(bp, generalOffset.x + bp.getOffset().x, generalOffset.y + bp.getOffset().y);
 
-
-            BodyPart bpclone = bp.clone();
-            bpclone.setPreview(true);
-            BodyPartSelector bps = new BodyPartSelector(bp.clone());
+            BodyPart bpClone = bp.clone();
+            bpClone.setPreview(true);
+            BodyPartSelector bps = new BodyPartSelector(bpClone, bp);
             bps.addObjects(this, generalOffset.x + 300, 100 + i * 100);
         }
-
-
         currentBodyPartIndex = 0;
         System.out.println("Starting the Game!");
         Greenfoot.start();

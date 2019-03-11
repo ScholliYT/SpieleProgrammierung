@@ -3,19 +3,27 @@ package de.greenfootdevz.charactereditor.Actor;
 import greenfoot.World;
 
 public class BodyPartSelector {
+    private final BodyPart bodyPartPrev;
     private final BodyPart bodyPart;
     private final Arrow rightArrow;
     private final Arrow leftArrow;
 
-    public BodyPartSelector(BodyPart bodyPart) {
+    public BodyPartSelector(BodyPart bodyPartprev, BodyPart bodyPart) {
+        this.bodyPartPrev = bodyPartprev;
         this.bodyPart = bodyPart;
-        this.leftArrow = new Arrow(true, () -> bodyPart.previous());
-        this.rightArrow = new Arrow(false, () -> bodyPart.next());
+        this.leftArrow = new Arrow(true, () -> {
+            bodyPartprev.previous();
+            bodyPart.previous();
+        });
+        this.rightArrow = new Arrow(false, () -> {
+            bodyPartprev.next();
+            bodyPart.next();
+        });
     }
 
     public void addObjects(World world, int posX, int posY) {
-        world.addObject(bodyPart, posX, posY);
-        world.addObject(leftArrow, posX - (bodyPart.getImage().getWidth() /2 + 10), posY);
-        world.addObject(rightArrow, posX + (bodyPart.getImage().getWidth() /2 + 10), posY);
+        world.addObject(bodyPartPrev, posX, posY);
+        world.addObject(leftArrow, posX - (80), posY);
+        world.addObject(rightArrow, posX + (80), posY);
     }
 }
