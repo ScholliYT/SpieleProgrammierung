@@ -11,4 +11,3 @@ public class MainApp extends GreenfootScenarioMain {
     GreenfootScenarioMain.main(args);
   }
 }
-

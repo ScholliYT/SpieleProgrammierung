@@ -2,6 +2,7 @@ package de.greenfootdevz.charactereditor.World;
 
 import de.greenfootdevz.charactereditor.Actor.BodyPart;
 import de.greenfootdevz.charactereditor.Actor.BodyPartSelector;
+import de.greenfootdevz.charactereditor.Actor.PepePls;
 import de.greenfootdevz.charactereditor.ExceptionDialog;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
@@ -51,7 +52,12 @@ public class CharacterEditorWorld extends World {
             bps.addObjects(this, generalOffset.x + 300, 100 + i * 100);
         }
         currentBodyPartIndex = 0;
-        System.out.println("Starting the Game!");
+        
+        int pepeWidth = 100, pepeHeight = 100;
+        
+        PepePls pepe = new PepePls(pepeWidth, pepeHeight);
+        addObject(pepe, getWidth() - pepeWidth / 2, getHeight() - pepeHeight / 2);
+        
         Greenfoot.start();
     }
 
