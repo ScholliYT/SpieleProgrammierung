@@ -1,5 +1,6 @@
 package de.greenfootdevz.charactereditor.Actor;
 
+import de.greenfootdevz.charactereditor.GreenfootImageExtended;
 import greenfoot.*;
 
 import java.awt.*;
@@ -80,5 +81,9 @@ public class BodyPart extends Actor implements Cloneable {
     @Override
     public BodyPart clone() {
         return new BodyPart(this.name, this.images, this.prevImages, this.offset, this.isPreview, this.currentImage);
+    }
+
+    public String getCurrentImage() {
+        return ((GreenfootImageExtended)images[currentImage]).getFilename();
     }
 }

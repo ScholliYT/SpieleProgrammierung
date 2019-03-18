@@ -1,6 +1,8 @@
 package de.greenfootdevz.charactereditor.Actor;
 
+import de.greenfootdevz.charactereditor.World.CharacterEditorWorld;
 import greenfoot.Actor;
+import greenfoot.Greenfoot;
 
 public class PepePls extends Actor{
 	
@@ -22,6 +24,9 @@ public class PepePls extends Actor{
 	@Override
 	public void act(){
 		update();
+		if (Greenfoot.mouseClicked(this)) {
+			((CharacterEditorWorld)getWorld()).saveCharacter();
+		}
 	}
 	
 	private void update(){

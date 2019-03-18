@@ -5,7 +5,7 @@ import greenfoot.Greenfoot;
 
 public class Arrow extends Actor {
 
-    private IClickEvent onClick;
+    private final IClickEvent onClick;
 
     public Arrow(boolean isLeft, IClickEvent onClick) {
         if (isLeft) {
