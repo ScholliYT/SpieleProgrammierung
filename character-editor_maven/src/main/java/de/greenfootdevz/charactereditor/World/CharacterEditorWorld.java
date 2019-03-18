@@ -12,13 +12,13 @@ import greenfoot.util.GreenfootUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-
-import static greenfoot.Greenfoot.isKeyDown;
 
 public class CharacterEditorWorld extends World {
 
@@ -129,7 +129,7 @@ public class CharacterEditorWorld extends World {
             for (int i = 0; i < images.length; i++) {
                 GreenfootImage image = images[i];
                 String filename = ((GreenfootImageExtended) image).getFilename();
-                GreenfootImage prevImage = getPrevImage(bodyPartName, filename.substring(filename.lastIndexOf('/')+1, filename.indexOf('.')));
+                GreenfootImage prevImage = getPrevImage(bodyPartName, filename.substring(filename.lastIndexOf('/') + 1, filename.indexOf('.')));
                 previmages[i] = prevImage;
             }
             bodyPart = new BodyPart(bodyPartName, images, previmages, offset, false);
@@ -141,42 +141,12 @@ public class CharacterEditorWorld extends World {
 
 
     public void act() {
-//        if (lastButtonPressed < System.currentTimeMillis() - BUTTON_PRESS_DELAY) {
-//            if (isKeyDown("left")) {
-//                bodyParts[currentBodyPartIndex].previous();
-//                lastButtonPressed = System.currentTimeMillis();
-//            } else if (isKeyDown("right")) {
-//                bodyParts[currentBodyPartIndex].next();
-//                lastButtonPressed = System.currentTimeMillis();
-//            } else if (isKeyDown("up")) {
-//                nextBodyPart();
-//                lastButtonPressed = System.currentTimeMillis();
-//            } else if (isKeyDown("down")) {
-//                previousBodyPart();
-//                lastButtonPressed = System.currentTimeMillis();
-//            }
-//        }
-    }
 
-    private void previousBodyPart() {
-        currentBodyPartIndex--;
-        if (currentBodyPartIndex <= 0) {
-            currentBodyPartIndex = bodyParts.length - 1;
-        }
-        showText(bodyParts[currentBodyPartIndex].getName(), 500, 500);
     }
-
-    private void nextBodyPart() {
-        currentBodyPartIndex++;
-        if (currentBodyPartIndex >= bodyParts.length) {
-            currentBodyPartIndex = 0;
-        }
-        showText(bodyParts[currentBodyPartIndex].getName(), 500, 500);
-    }
-
+    
     public void saveCharacter() {
         JSONObject jsonObject = new JSONObject();
-        for(BodyPart bp : bodyParts) {
+        for (BodyPart bp : bodyParts) {
             try {
                 jsonObject.put(bp.getName(), bp.getCurrentImage());
             } catch (JSONException e) {
@@ -185,11 +155,33 @@ public class CharacterEditorWorld extends World {
         }
 
         try {
-            FileOutputStream fos = new FileOutputStream(new File(System.getProperty("user.home")  + "/character.json"));
+            File path = new File(System.getProperty("user.home") + "/charactereditor");
+            path.mkdirs();
+            FileOutputStream fos = new FileOutputStream(new File(path + "/character.json"));
             fos.write(jsonObject.toString(1).getBytes());
+
+            // Save as new image
+            ImageIO.write(combineImages(), "PNG", new File(path.toString() + "/character.png"));
+
             JOptionPane.showMessageDialog(null, "Datei gespeichert!");
+
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private BufferedImage combineImages() {
+        // create the new image, canvas size is defined by the first image
+        int w = bodyParts[0].getCurrentImage().getAwtImage().getWidth();
+        int h = bodyParts[0].getCurrentImage().getAwtImage().getHeight();
+        BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+        // paint all images, preserving the alpha channels
+        Graphics g = combined.getGraphics();
+        for (BodyPart bp : bodyParts) {
+            g.drawImage(bp.getCurrentImage().getAwtImage(), 0, 0, null);
+        }
+
+        return combined;
     }
 }
