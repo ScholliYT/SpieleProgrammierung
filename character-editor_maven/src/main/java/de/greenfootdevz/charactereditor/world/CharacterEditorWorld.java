@@ -98,7 +98,7 @@ public class CharacterEditorWorld extends World {
         JSONObject jsonObject = new JSONObject();
         for (BodyPart bp : bodyParts) {
             try {
-                jsonObject.put(bp.getName(), bp.getCurrentImage());
+                jsonObject.put(bp.getName(), bp.getCurrentImage().getFilename());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
