@@ -6,8 +6,8 @@ public class GreenfootImageExtended extends GreenfootImage {
 
     private String filename;
 
-    public GreenfootImageExtended(String filename) throws IllegalArgumentException {
-        super(filename);
+    public GreenfootImageExtended(GreenfootImage img, String filename) throws IllegalArgumentException {
+        super(img);
         this.filename = filename;
     }
 

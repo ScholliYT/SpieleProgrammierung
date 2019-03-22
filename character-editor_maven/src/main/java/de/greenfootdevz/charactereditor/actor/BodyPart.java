@@ -1,4 +1,4 @@
-package de.greenfootdevz.charactereditor.Actor;
+package de.greenfootdevz.charactereditor.actor;
 
 import de.greenfootdevz.charactereditor.GreenfootImageExtended;
 import greenfoot.*;
@@ -10,7 +10,6 @@ public class BodyPart extends Actor implements Cloneable {
 
     private final GreenfootImage[] images;
     private final GreenfootImage[] prevImages;
-    private final Point offset;
     private boolean isPreview;
     private String name;
     private int currentImage;
@@ -24,7 +23,7 @@ public class BodyPart extends Actor implements Cloneable {
         return name;
     }
 
-    public BodyPart(String name, GreenfootImage[] images, GreenfootImage[] prevImages, Point offset, boolean isPreview) throws IllegalArgumentException {
+    public BodyPart(String name, GreenfootImage[] images, GreenfootImage[] prevImages, boolean isPreview) throws IllegalArgumentException {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("images must be an array with at least one element");
         }
@@ -34,14 +33,13 @@ public class BodyPart extends Actor implements Cloneable {
         this.name = name;
         this.images = images;
         this.prevImages = prevImages;
-        this.offset = offset;
         this.isPreview = isPreview;
         currentImage = 0;
         setCurrentImage();
     }
 
-    public BodyPart(String name, GreenfootImage[] images, GreenfootImage[] prevImages, Point offset, boolean isPreview, int currentImage) throws IllegalArgumentException {
-        this(name, images, prevImages, offset, isPreview);
+    public BodyPart(String name, GreenfootImage[] images, GreenfootImage[] prevImages, boolean isPreview, int currentImage) throws IllegalArgumentException {
+        this(name, images, prevImages, isPreview);
         this.currentImage = currentImage;
         setCurrentImage();
     }
@@ -74,13 +72,9 @@ public class BodyPart extends Actor implements Cloneable {
         }
     }
 
-    public Point getOffset() {
-        return offset;
-    }
-
     @Override
     public BodyPart clone() {
-        return new BodyPart(this.name, this.images, this.prevImages, this.offset, this.isPreview, this.currentImage);
+        return new BodyPart(this.name, this.images, this.prevImages, this.isPreview, this.currentImage);
     }
 
     public GreenfootImageExtended getCurrentImage() {

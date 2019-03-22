@@ -1,4 +1,4 @@
-package de.greenfootdevz.charactereditor.Actor;
+package de.greenfootdevz.charactereditor.actor;
 
 import greenfoot.Actor;
 import greenfoot.Greenfoot;

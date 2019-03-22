@@ -1,7 +1,7 @@
 #Greenfoot project file
 
 # Class definitions
-# class.de.greenfootdevz.charactereditor.World.CharacterEditorWorld.image=space.jpg
+# class.de.greenfootdevz.charactereditor.world.CharacterEditorWorld.image=space.jpg
 
 
 # Editor Settings
@@ -28,7 +28,7 @@ readme.y=10
 
 # Target definitions (unknown use)
 target1.height=50
-target1.name=de.greenfootdevz.charactereditor.World.CharacterEditorWorld
+target1.name=de.greenfootdevz.charactereditor.world.CharacterEditorWorld
 target1.showInterface=false
 target1.type=ClassTarget
 target1.typeParameters=
@@ -40,4 +40,4 @@ target1.y=0
 version=3.0.0
 
 # Misc
-world.lastInstantiated=de.greenfootdevz.charactereditor.World.CharacterEditorWorld
+world.lastInstantiated=de.greenfootdevz.charactereditor.world.CharacterEditorWorld

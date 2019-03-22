@@ -1,4 +1,4 @@
-package de.greenfootdevz.charactereditor;
+package de.greenfootdevz.charactereditor.util;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
