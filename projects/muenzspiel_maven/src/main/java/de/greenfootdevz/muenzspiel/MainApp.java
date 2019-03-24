@@ -18,7 +18,5 @@ public class MainApp extends GreenfootScenarioMain {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 }

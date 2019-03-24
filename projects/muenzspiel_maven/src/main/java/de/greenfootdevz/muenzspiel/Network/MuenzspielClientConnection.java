@@ -5,6 +5,7 @@ import de.greenfootdevz.muenzspiel.ExceptionDialog;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MuenzspielClientConnection extends Thread {
 	
@@ -23,7 +24,7 @@ public class MuenzspielClientConnection extends Thread {
 	public MuenzspielClientConnection(InetAddress address, int port, boolean autoconnect) throws IOException {
 		this.address = address;
 		this.port = port;
-		this.mostRecentData = new MuenzspielHostData(null);
+		this.mostRecentData = new MuenzspielHostData(new ArrayList<>());
 		if (autoconnect) {
 			connect();
 		}
@@ -55,6 +56,7 @@ public class MuenzspielClientConnection extends Thread {
 		while (true) {
 			try {
 				Object o = ois.readObject();
+				System.out.println("Read: " + o.toString());
 				synchronized (mostRecentData) {
 					this.mostRecentData = (MuenzspielHostData) o;
 				}

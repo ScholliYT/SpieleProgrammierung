@@ -1,7 +1,9 @@
 package de.greenfootdevz.muenzspiel.Network;
 
-import java.awt.Point;
 import java.io.Serializable;
+
+import de.greenfootdevz.muenzspiel.Actor.Coin;
+import de.greenfootdevz.muenzspiel.Actor.SerialCoin;
 
 /**
  * Diese Klasse stellt einen Datenpaket dar, welches vom Client zum Host
@@ -11,26 +13,28 @@ public class MuenzspielClientData implements Serializable{
 	
 	private static final long serialVersionUID = -6243741163353349874L;
 	
-	private final int[] xes;
-	private final int[] yes;
+	private SerialCoin[] sCoins;
 	
-	public MuenzspielClientData(Point[] points){
-		xes = new int[points.length];
-		yes = new int[points.length];
+	public MuenzspielClientData(Coin[] coins){
+		sCoins = new SerialCoin[coins.length];
 		
-		for(int i = 0; i < points.length; i++){
-			xes[i] = points[i].x;
-			yes[i] = points[i].y;
+		for(int i = 0; i < sCoins.length; i++){
+			sCoins[i] = new SerialCoin(coins[i]);
 		}
 	}
 	
-	public Point[] getPoints(){
-		Point[] result = new Point[xes.length];
+	public SerialCoin[] getCoins(){
+		return sCoins;
+	}
+	
+	@Override
+	public String toString(){
+		String result = "{";
 		
-		for(int i = 0; i < xes.length; i++){
-			result[i] = new Point(xes[i], yes[i]);
+		for(SerialCoin c: sCoins){
+			result += c.toString();
 		}
-		return result;
+		return result + "}";
 	}
 	
 }

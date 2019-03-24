@@ -1,5 +1,6 @@
 package de.greenfootdevz.muenzspiel.Actor;
 
+import de.greenfootdevz.muenzspiel.World.Space;
 import greenfoot.*; // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Coin extends Actor{
@@ -8,6 +9,7 @@ public class Coin extends Actor{
 	
 	private boolean clicked = false;
 	private GreenfootImage[] image = new GreenfootImage[6];
+	private Space s;
 	
 	public boolean isClicked() {
 		return clicked;
@@ -19,7 +21,6 @@ public class Coin extends Actor{
 	
 	public Coin(int value) throws IllegalArgumentException{
 		this.value = value;
-		
 		// Get Images
 		image[0] = new GreenfootImage("muenzeEinsGelb.png");
 		image[1] = new GreenfootImage("muenzeZweiGelb.png");
@@ -45,8 +46,11 @@ public class Coin extends Actor{
 	}
 	
 	public void act(){
+		if(s == null) s = (Space) getWorld();
+		
 		if(Greenfoot.mouseClicked(this)){
-			getWorld().removeObject(this);
+			s.removeObject(this);
+			s.addCollected(this);
 		}
 	}
 	
