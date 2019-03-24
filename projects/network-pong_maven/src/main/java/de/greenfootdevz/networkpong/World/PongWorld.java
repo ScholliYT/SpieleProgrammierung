@@ -42,17 +42,17 @@ public class PongWorld extends World {
     private PongHostConnection hostConnection;
 
     private final int BAT_WALL_OFFSET = 20;
-    private int BALL_SPEED = 4; // Double verwenden, und so die geschwindigkeit nur um 0.25 anhöhen, anstatt 1,
-    // oder je nach eingesammelten Boostern?
-    private final int MAX_BALL_SPEED = 12;
-    private final double BALL_MAX_BOUNCE_ANGLE = 5 * Math.PI / 12; // i.e. 75° (degrees)
+    private double BALL_SPEED = 7; // Double verwenden, und so die geschwindigkeit nur um 0.25 anhöhen, anstatt 1, oder je nach eingesammelten Boostern?
+    private final double MAX_BALL_SPEED = 12;
+    private final double BALL_MAX_BOUNCE_ANGLE = 4 * Math.PI / 12; // i.e. 60° (degrees)
+    private final double BOOSTER_SPEED_INCREASE = 1.0;
 
     public PongWorld() throws Exception {
         super(800, 600, 1);
 
         GameInitFrame frame = new GameInitFrame();
         frame.setVisible(true);
-        Thread.sleep(100);
+        Thread.sleep(100); // wait to build UI
         this.isHost = frame.isHost();
         InetAddress ip = frame.getSelectedAddress();
         int port = frame.getSelectedPort();
@@ -152,8 +152,7 @@ public class PongWorld extends World {
 
         // Host (left)
         if (newBallX < BAT_WALL_OFFSET + bat.getImage().getWidth() / 2
-                && ball.getActualX() >= BAT_WALL_OFFSET + bat.getImage().getWidth() / 2) { // ball moved over the left
-            // paddle Y-Axis
+                && ball.getActualX() >= BAT_WALL_OFFSET + bat.getImage().getWidth() / 2) { // ball moved over the left paddle Y-Axis
             double intersectX = BAT_WALL_OFFSET + bat.getImage().getWidth() / 2.0; // this is constant
             double intersectY = ball.getActualY()
                     - ((ball.getActualX() - (BAT_WALL_OFFSET + bat.getImage().getWidth() / 2.0))
@@ -187,8 +186,7 @@ public class PongWorld extends World {
         // Remote (right)
         if (newBallX > getWidth() - BAT_WALL_OFFSET - remoteBat.getImage().getWidth() / 2
                 && ball.getActualX() <= getWidth() - BAT_WALL_OFFSET - bat.getImage().getWidth() / 2) {
-            double intersectX = getWidth() - BAT_WALL_OFFSET - remoteBat.getImage().getWidth() / 2.0; // this is
-            // constant
+            double intersectX = getWidth() - BAT_WALL_OFFSET - remoteBat.getImage().getWidth() / 2.0; // this is constant
             double intersectY = ball.getActualY()
                     - ((ball.getActualX() - (getWidth() - BAT_WALL_OFFSET - remoteBat.getImage().getWidth() / 2))
                     * (ball.getActualY() - newBallY)) / (ball.getActualX() - newBallX);
@@ -238,7 +236,6 @@ public class PongWorld extends World {
         // # Post processing 
         // ############################################################################################################
 
-        // TODO: activate sound
         if (!"".equals(currentSoundFile)) {
             Greenfoot.playSound(currentSoundFile);
         }
@@ -258,7 +255,7 @@ public class PongWorld extends World {
             if (BALL_SPEED >= MAX_BALL_SPEED) {
                 System.out.println("BALL_SPEED was not increased because its maximum was reached!");
             } else {
-                this.BALL_SPEED++;
+                this.BALL_SPEED += BOOSTER_SPEED_INCREASE;
                 System.out.println("BALL_SPEED increased to " + BALL_SPEED);
                 removeObject(booster);
                 this.booster = null;
@@ -279,24 +276,6 @@ public class PongWorld extends World {
             throw new IllegalArgumentException("max is smaller than min.");
         }
         return r.nextInt((max - min) + 1) + min;
-    }
-
-    private void handleBatHit(Actor bat) {
-        int relativeIntersectY = bat.getY() - ball.getY();
-        double normalizedRelativeIntersectionY = (relativeIntersectY / (double) (bat.getImage().getHeight() / 2));
-        double bounceAngle = normalizedRelativeIntersectionY * BALL_MAX_BOUNCE_ANGLE; // angle is limited to
-        // [-BALL_MAX_BOUNCE_ANGLE|BALL_MAX_BOUNCE_ANGLE]
-
-        double cos = Math.cos(Math.toRadians(bounceAngle));
-        dx = BALL_SPEED * cos * (dx < 0 ? 1 : -1);
-
-        double sin = Math.sin(Math.toRadians(bounceAngle));
-        dy = (BALL_SPEED * -sin);
-
-        // Make sure the ball wont get stuck in the paddle
-        do {
-            ball.setLocation(ball.getActualX() + dx, ball.getActualY() + dy);
-        } while (ball.getIntesecting(bat.getClass()) != null);
     }
 
     private void resetBall() {

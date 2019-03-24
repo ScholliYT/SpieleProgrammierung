@@ -196,7 +196,6 @@ public class GameInitFrame extends JFrame{
         JMenu mnDatei = new JMenu("Datei");
         menuBar.add(mnDatei);
 
-        // TODO: Beenden Funktionalität implementieren - anstatt nen Issue zu öffnen hätte man es eben implementieren können, uff
         JMenuItem mntmBeenden = new JMenuItem("Beenden");
         mntmBeenden.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         mntmBeenden.addActionListener(action -> exit());
