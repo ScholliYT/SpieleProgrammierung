@@ -1,4 +1,7 @@
-import greenfoot.*; 
+package de.greenfootdevz.schollenspiel.Actor;
+
+import de.greenfootdevz.schollenspiel.World.IceWorld;
+import greenfoot.*;
 import java.lang.*;
 public class Player extends Actor
 {

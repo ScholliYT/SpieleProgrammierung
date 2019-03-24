@@ -1,3 +1,7 @@
+package de.greenfootdevz.schollenspiel.World;
+
+import de.greenfootdevz.schollenspiel.Actor.Floe;
+import de.greenfootdevz.schollenspiel.Actor.Player;
 import greenfoot.*;
 import java.util.*;
 public class IceWorld extends World
