@@ -10,6 +10,7 @@ env:
     - PROJECT_DIR=character-editor_maven
     - PROJECT_DIR=muenzspiel_maven
     - PROJECT_DIR=fassspiel_maven
+    - PROJECT_DIR=schollenspiel_maven
 cache:
   directories:
   - "$HOME/.m2"
