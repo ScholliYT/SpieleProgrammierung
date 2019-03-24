@@ -88,6 +88,6 @@ public class BodyPart extends Actor implements Cloneable {
     }
 
     public GreenfootImageExtended getCurrentImage() {
-        return ((GreenfootImageExtended)images[currentImage]);
+        return ((GreenfootImageExtended) images[currentImage]);
     }
 }

@@ -1,7 +1,6 @@
 package de.greenfootdevz.charactereditor.actor;
 
 import de.greenfootdevz.charactereditor.util.ISaveCharacter;
-import de.greenfootdevz.charactereditor.world.CharacterEditorWorld;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 

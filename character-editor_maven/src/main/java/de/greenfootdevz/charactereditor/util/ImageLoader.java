@@ -51,7 +51,7 @@ public class ImageLoader {
                 Path currentPath = it.next();
                 if (currentPath.toString().endsWith(".png") || currentPath.toString().endsWith(".jpg")) {
                     String filename = currentPath.getFileName().toString();
-                    if(fileSelector.filter(filename)) {
+                    if (fileSelector.filter(filename)) {
                         BufferedImage bufImage = ImageIO.read(ImageLoader.class.getResourceAsStream(path + "/" + filename));
 
                         GreenfootImage gImage = new GreenfootImage(bufImage.getWidth(), bufImage.getHeight());
@@ -67,12 +67,12 @@ public class ImageLoader {
             return images.toArray(imagesarray);
         } catch (Exception e) {
             new ExceptionDialog(e);
-        }
-        finally {
-            if(fileSystem != null) {
+        } finally {
+            if (fileSystem != null) {
                 try {
                     fileSystem.close();
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
         }
         return new GreenfootImageExtended[0];

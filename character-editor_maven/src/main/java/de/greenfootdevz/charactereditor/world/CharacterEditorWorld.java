@@ -102,11 +102,11 @@ public class CharacterEditorWorld extends World {
     }
 
     private void loadCharacter(JSONObject jsonObject) {
-        for(BodyPart bp : bodyParts) {
-            if(jsonObject.containsKey(bp.getName())) {
-                String loadImage = (String)jsonObject.get(bp.getName());
+        for (BodyPart bp : bodyParts) {
+            if (jsonObject.containsKey(bp.getName())) {
+                String loadImage = (String) jsonObject.get(bp.getName());
 
-                if(!bp.setImageByName(loadImage)) {
+                if (!bp.setImageByName(loadImage)) {
                     JOptionPane.showMessageDialog(null,
                             "Körperteil: " + bp.getName() +
                                     " Grafik: " + loadImage +
@@ -114,13 +114,14 @@ public class CharacterEditorWorld extends World {
                 }
             }
         }
+        JOptionPane.showMessageDialog(null, "Charakter geladen");
     }
 
 
     private void saveCharacter() {
         JSONObject jsonObject = new JSONObject();
         for (BodyPart bp : bodyParts) {
-                jsonObject.put(bp.getName(), bp.getCurrentImage().getFilename());
+            jsonObject.put(bp.getName(), bp.getCurrentImage().getFilename());
         }
 
         FileOutputStream fos = null;
@@ -136,9 +137,8 @@ public class CharacterEditorWorld extends World {
             JOptionPane.showMessageDialog(null, "Datei gespeichert!\nPfad: " + path.toString());
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
-            if(fos != null) {
+        } finally {
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException ignored) {
