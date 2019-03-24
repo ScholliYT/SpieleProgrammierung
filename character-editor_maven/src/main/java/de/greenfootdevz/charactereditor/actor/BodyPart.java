@@ -1,17 +1,15 @@
 package de.greenfootdevz.charactereditor.actor;
 
 import de.greenfootdevz.charactereditor.GreenfootImageExtended;
-import greenfoot.*;
-
-import java.awt.*;
+import greenfoot.Actor;
 
 public class BodyPart extends Actor implements Cloneable {
 
 
-    private final GreenfootImage[] images;
-    private final GreenfootImage[] prevImages;
-    private boolean isPreview;
     private String name;
+    private final GreenfootImageExtended[] images;
+    private final GreenfootImageExtended[] prevImages;
+    private boolean isPreview;
     private int currentImage;
 
     public void setPreview(boolean val) {
@@ -23,7 +21,7 @@ public class BodyPart extends Actor implements Cloneable {
         return name;
     }
 
-    public BodyPart(String name, GreenfootImage[] images, GreenfootImage[] prevImages, boolean isPreview) throws IllegalArgumentException {
+    public BodyPart(String name, GreenfootImageExtended[] images, GreenfootImageExtended[] prevImages, boolean isPreview) throws IllegalArgumentException {
         if (images == null || images.length == 0) {
             throw new IllegalArgumentException("images must be an array with at least one element");
         }
@@ -38,7 +36,7 @@ public class BodyPart extends Actor implements Cloneable {
         setCurrentImage();
     }
 
-    public BodyPart(String name, GreenfootImage[] images, GreenfootImage[] prevImages, boolean isPreview, int currentImage) throws IllegalArgumentException {
+    public BodyPart(String name, GreenfootImageExtended[] images, GreenfootImageExtended[] prevImages, boolean isPreview, int currentImage) throws IllegalArgumentException {
         this(name, images, prevImages, isPreview);
         this.currentImage = currentImage;
         setCurrentImage();
@@ -62,6 +60,18 @@ public class BodyPart extends Actor implements Cloneable {
             currentImage = 0;
         }
         setCurrentImage();
+    }
+
+    public boolean setImageByName(String name) {
+        for (int i = 0; i < images.length; i++) {
+            GreenfootImageExtended image = images[i];
+            if (image.getFilename().equals(name)) {
+                currentImage = i;
+                setCurrentImage();
+                return true;
+            }
+        }
+        return false;
     }
 
     private void setCurrentImage() {

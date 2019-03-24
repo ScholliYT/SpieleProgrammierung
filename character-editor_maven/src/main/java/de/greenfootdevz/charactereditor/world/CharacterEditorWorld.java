@@ -1,16 +1,15 @@
 package de.greenfootdevz.charactereditor.world;
 
+import de.greenfootdevz.charactereditor.GreenfootImageExtended;
 import de.greenfootdevz.charactereditor.actor.BodyPart;
 import de.greenfootdevz.charactereditor.actor.BodyPartSelector;
+import de.greenfootdevz.charactereditor.actor.OpenCharacter;
 import de.greenfootdevz.charactereditor.actor.PepePls;
 import de.greenfootdevz.charactereditor.util.ExceptionDialog;
-import de.greenfootdevz.charactereditor.GreenfootImageExtended;
 import de.greenfootdevz.charactereditor.util.ImageLoader;
 import greenfoot.Greenfoot;
-import greenfoot.GreenfootImage;
 import greenfoot.World;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,6 +45,8 @@ public class CharacterEditorWorld extends World {
 
         initPepe();
 
+        initOpenCharacter();
+
         Greenfoot.start();
     }
 
@@ -59,8 +60,15 @@ public class CharacterEditorWorld extends World {
 
     private void initPepe() {
         int pepeWidth = 100, pepeHeight = 100;
-        PepePls pepe = new PepePls(pepeWidth, pepeHeight);
+        PepePls pepe = new PepePls(pepeWidth, pepeHeight, this::saveCharacter); // inject file save logic on button click
         addObject(pepe, getWidth() - pepeWidth / 2, getHeight() - pepeHeight / 2);
+        showText("Klick mich\nzum Speichern", getWidth() - 80, getHeight() - pepeHeight - 15);
+    }
+
+    private void initOpenCharacter() {
+        int width = 100, height = 100;
+        OpenCharacter openCharacter = new OpenCharacter(width, height, this::loadCharacter); // inject file save logic on button click
+        addObject(openCharacter, getWidth() - width / 2 - 5, 5 + height / 2);
     }
 
     public void act() {
@@ -78,12 +86,12 @@ public class CharacterEditorWorld extends World {
 
         BodyPart bodyPart = null;
         try {
-            GreenfootImage[] images = ImageLoader.getImages(bodyPartName);
-            GreenfootImage[] previmages = new GreenfootImage[images.length];
+            GreenfootImageExtended[] images = ImageLoader.getImages(bodyPartName);
+            GreenfootImageExtended[] previmages = new GreenfootImageExtended[images.length];
             for (int i = 0; i < images.length; i++) {
-                GreenfootImage image = images[i];
-                String filename = ((GreenfootImageExtended) image).getFilename();
-                GreenfootImage prevImage = ImageLoader.getPrevImage(bodyPartName, filename);
+                GreenfootImageExtended image = images[i];
+                String filename = image.getFilename();
+                GreenfootImageExtended prevImage = ImageLoader.getPrevImage(bodyPartName, filename);
                 previmages[i] = prevImage;
             }
             bodyPart = new BodyPart(bodyPartName, images, previmages, false);
@@ -93,30 +101,49 @@ public class CharacterEditorWorld extends World {
         return bodyPart;
     }
 
+    private void loadCharacter(JSONObject jsonObject) {
+        for(BodyPart bp : bodyParts) {
+            if(jsonObject.containsKey(bp.getName())) {
+                String loadImage = (String)jsonObject.get(bp.getName());
 
-    public void saveCharacter() {
-        JSONObject jsonObject = new JSONObject();
-        for (BodyPart bp : bodyParts) {
-            try {
-                jsonObject.put(bp.getName(), bp.getCurrentImage().getFilename());
-            } catch (JSONException e) {
-                e.printStackTrace();
+                if(!bp.setImageByName(loadImage)) {
+                    JOptionPane.showMessageDialog(null,
+                            "Körperteil: " + bp.getName() +
+                                    " Grafik: " + loadImage +
+                                    " konnte nicht gefunden werden.");
+                }
             }
         }
+    }
 
+
+    private void saveCharacter() {
+        JSONObject jsonObject = new JSONObject();
+        for (BodyPart bp : bodyParts) {
+                jsonObject.put(bp.getName(), bp.getCurrentImage().getFilename());
+        }
+
+        FileOutputStream fos = null;
         try {
             File path = new File(System.getProperty("user.home") + "/charactereditor");
             path.mkdirs();
-            FileOutputStream fos = new FileOutputStream(new File(path + "/character.json"));
-            fos.write(jsonObject.toString(1).getBytes());
+            fos = new FileOutputStream(new File(path + "/character.json"));
+            fos.write(jsonObject.toJSONString().getBytes());
 
             // Save as new image
             ImageIO.write(combineImages(), "PNG", new File(path.toString() + "/character.png"));
 
-            JOptionPane.showMessageDialog(null, "Datei gespeichert!");
-
-        } catch (JSONException | IOException e) {
+            JOptionPane.showMessageDialog(null, "Datei gespeichert!\nPfad: " + path.toString());
+        } catch (IOException e) {
             e.printStackTrace();
+        }
+        finally {
+            if(fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
     }
 
