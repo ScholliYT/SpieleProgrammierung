@@ -5,6 +5,7 @@ if [ -n "$CHECKPROJECTSDIR" ]; then #check if envvar is empty
 	for d in $CHECKPROJECTSDIR/*/ ; do
 		echo "checking "$d"..."
 		p="${d/$CHECKPROJECTSDIR"/"/PROJECT_DIR=}"
+		p="${p::-1}" # remove last / from path
 		if grep -q $p .travis.yml; then
 			echo "project found in travis.yml!"
 		else
