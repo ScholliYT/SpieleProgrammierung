@@ -1,7 +1,7 @@
 package de.greenfootdevz.muenzspiel.Network;
 
 import de.greenfootdevz.muenzspiel.ExceptionDialog;
-import de.greenfootdevz.muenzspiel.Actor.Coin;
+import de.greenfootdevz.muenzspiel.Actor.SerialCoin;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,7 +28,7 @@ public class MuenzspielHostConnection extends Thread {
 		this.address = address;
 		this.backlog = backlog;
 		this.port = port;
-		this.mostRecent = new MuenzspielClientData(new Coin[0]);
+		this.mostRecent = new MuenzspielClientData(new SerialCoin[0]);
 		if (autoStart) {
 			startServer();
 		}

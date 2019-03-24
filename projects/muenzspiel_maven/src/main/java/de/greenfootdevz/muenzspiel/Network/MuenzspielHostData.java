@@ -2,7 +2,6 @@ package de.greenfootdevz.muenzspiel.Network;
 
 import java.util.List;
 
-import de.greenfootdevz.muenzspiel.Actor.Coin;
 import de.greenfootdevz.muenzspiel.Actor.SerialCoin;
 
 import java.io.Serializable;
@@ -19,16 +18,13 @@ public class MuenzspielHostData implements Serializable{
 	
 	private SerialCoin[] coins;
 	
-	public MuenzspielHostData(List<Coin> allCoins){
+	public MuenzspielHostData(List<SerialCoin> allCoins){
 		this(allCoins, false);
 	}
 	
-	public MuenzspielHostData(List<Coin> allCoins, boolean initial){
+	public MuenzspielHostData(List<SerialCoin> allCoins, boolean initial){
 		this.isInitial = initial;
-		coins = new SerialCoin[allCoins.size()];
-		for(int i = 0; i < coins.length; i++){
-			coins[i] = new SerialCoin(allCoins.get(i));
-		}
+		coins = allCoins.toArray(new SerialCoin[allCoins.size()]);
 	}
 	
 	public boolean isInitial(){
@@ -46,7 +42,7 @@ public class MuenzspielHostData implements Serializable{
 		for(SerialCoin c: coins){
 			result += c.toString();
 		}
-		return result + "}";
+		return result + ", initial= " + isInitial + "}";
 	}
 	
 }

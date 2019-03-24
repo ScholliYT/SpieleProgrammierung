@@ -49,8 +49,8 @@ public class Coin extends Actor{
 		if(s == null) s = (Space) getWorld();
 		
 		if(Greenfoot.mouseClicked(this)){
-			s.removeObject(this);
 			s.addCollected(this);
+			s.removeObject(this);
 		}
 	}
 	

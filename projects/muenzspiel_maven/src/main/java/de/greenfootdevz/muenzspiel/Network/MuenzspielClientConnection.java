@@ -47,6 +47,7 @@ public class MuenzspielClientConnection extends Thread {
 	}
 	
 	public void sendUpdate(MuenzspielClientData data) throws IOException {
+//		System.out.println("sending: " + data.toString());
 		oos.writeObject(data);
 		oos.flush();
 	}
@@ -56,14 +57,23 @@ public class MuenzspielClientConnection extends Thread {
 		while (true) {
 			try {
 				Object o = ois.readObject();
-				System.out.println("Read: " + o.toString());
+//				System.out.println("Read: " + o.toString());
 				synchronized (mostRecentData) {
 					this.mostRecentData = (MuenzspielHostData) o;
+				}
+				if(mostRecentData.isInitial()){
+					System.out.println("waiting!");
+					Thread.sleep(250);
 				}
 			} catch (Exception e) {
 				new ExceptionDialog(e);
 			}
 		}
+	}
+	
+	public MuenzspielHostData read() throws Exception{
+		Object o = ois.readObject();
+		return (MuenzspielHostData) o;
 	}
 	
 	private void checkIsNotConnected() throws IOException {
