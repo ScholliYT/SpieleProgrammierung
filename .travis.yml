@@ -2,10 +2,11 @@ sudo: false
 language: java
 jdk: oraclejdk8
 env:
-- PROJECT_DIR=network-pong_maven
-- PROJECT_DIR=character-editor_maven
-- PROJECT_DIR=muenzspiel_maven
-- PROJECT_DIR=fassspiel_maven
+  - PROJECT_DIR=network-pong_maven TEST=asdf
+  - PROJECT_DIR=character-editor_maven
+  - PROJECT_DIR=muenzspiel_maven
+  - PROJECT_DIR=fassspiel_maven
+  - PROJECTS=network-pong_maven!character-editor_maven!muenzspiel_maven!fassspiel_maven
 cache:
   directories:
   - "$HOME/.m2"
