@@ -4,7 +4,8 @@ if [ -n "$CHECKPROJECTSDIR" ]; then #check if envvar is empty
 	PASS=1
 	for d in $CHECKPROJECTSDIR/*/ ; do
 		echo "checking "$d"..."
-		if grep -q $d .travis.yml; then
+		p="${d/$CHECKPROJECTSDIR"/"/PROJECT_DIR=}"
+		if grep -q $p .travis.yml; then
 			echo "project found in travis.yml!"
 		else
 			echo "project "$d" not found in travis.yml. Please configure this project to make this test pass!"
