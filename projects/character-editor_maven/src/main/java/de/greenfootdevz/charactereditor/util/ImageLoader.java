@@ -36,7 +36,7 @@ public class ImageLoader {
         FileSystem fileSystem = null;
         try {
             String path = "/images/" + BODYPARTS_ROOTDIR + partName;
-            URI uri = CharacterEditorWorld.class.getResource(path).toURI();
+            URI uri = ImageLoader.class.getResource(path).toURI();
             Path myPath;
             if (uri.getScheme().equals("jar")) {
                 fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
@@ -52,14 +52,7 @@ public class ImageLoader {
                 if (currentPath.toString().endsWith(".png") || currentPath.toString().endsWith(".jpg")) {
                     String filename = currentPath.getFileName().toString();
                     if (fileSelector.filter(filename)) {
-                        BufferedImage bufImage = ImageIO.read(ImageLoader.class.getResourceAsStream(path + "/" + filename));
-
-                        GreenfootImage gImage = new GreenfootImage(bufImage.getWidth(), bufImage.getHeight());
-                        BufferedImage gBufImg = gImage.getAwtImage();
-                        Graphics2D graphics = (Graphics2D) gBufImg.getGraphics();
-                        graphics.drawImage(bufImage, null, 0, 0);
-
-                        images.add(new GreenfootImageExtended(gImage, filename));
+                        images.add(loadImage(path, filename));
                     }
                 }
             }
@@ -76,5 +69,20 @@ public class ImageLoader {
             }
         }
         return new GreenfootImageExtended[0];
+    }
+
+    private static GreenfootImageExtended loadImage(String path, String filename) {
+        BufferedImage bufImage = null;
+        try {
+            bufImage = ImageIO.read(ImageLoader.class.getResourceAsStream(path + "/" + filename));
+            GreenfootImage gImage = new GreenfootImage(bufImage.getWidth(), bufImage.getHeight());
+            BufferedImage gBufImg = gImage.getAwtImage();
+            Graphics2D graphics = (Graphics2D) gBufImg.getGraphics();
+            graphics.drawImage(bufImage, null, 0, 0);
+            return new GreenfootImageExtended(gImage, filename);
+        } catch (IOException e) {
+            new ExceptionDialog(e);
+        }
+        return null;
     }
 }
