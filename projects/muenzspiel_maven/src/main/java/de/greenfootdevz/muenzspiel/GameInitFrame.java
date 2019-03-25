@@ -45,7 +45,7 @@ public class GameInitFrame extends JFrame {
 			}
 		});
 		setResizable(false);
-		setTitle("Netzwerkpong - Starteinstellungen");
+		setTitle("Netzwerkmünzspiel - Starteinstellungen");
 		setBounds(100, 100, 450, 293);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -235,7 +235,7 @@ public class GameInitFrame extends JFrame {
 
 	public boolean isHost() throws Exception {
 		while (isVisible()) {
-			Thread.sleep(1);
+			Thread.sleep(10);
 		}
 
 		if (isHost) {

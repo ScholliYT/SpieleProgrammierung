@@ -14,54 +14,53 @@ import de.greenfootdevz.muenzspiel.Network.MuenzspielHostConnection;
 import de.greenfootdevz.muenzspiel.Network.MuenzspielHostData;
 import greenfoot.*; // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class Space extends World{
-	
+public class Space extends World {
+
 	private final int COIN_COUNT = 60;
-	
-	
+
 	private boolean isHost;
-	
+
 	private MuenzspielClientConnection client;
 	private MuenzspielHostConnection host;
-	
+
 	private List<SerialCoin> collected, enemyCollected;
-	
+
 	public Space() {
 		super(960, 620, 1);
 		this.collected = new ArrayList<>();
 		this.enemyCollected = new ArrayList<SerialCoin>();
 		InetAddress address = null;
 		int port = 0;
-		
+
 		try {
 			GameInitFrame frame = new GameInitFrame();
 			frame.setVisible(true);
 			Thread.sleep(100);
 			isHost = frame.isHost();
-			
+
 			address = frame.getSelectedAddress();
 			port = frame.getSelectedPort();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		
+
 		if (isHost) {
 			System.out.println("Hosting a game on this machine!");
 			try {
 				host = new MuenzspielHostConnection(address, 0, port, true);
 				host.waitForClientConnection();
-				
+
 				createCoins();
 				Thread.sleep(250);
-				
+
 				List<SerialCoin> coins = new ArrayList<SerialCoin>();
 				List<Coin> mapCoins = getObjects(Coin.class);
-				
-				for(Coin c: mapCoins){
+
+				for (Coin c : mapCoins) {
 					coins.add(new SerialCoin(c));
 				}
-				
+
 				host.sendUpdate(new MuenzspielHostData(coins, true));
 				Thread.sleep(250);
 				host.start();
@@ -70,17 +69,17 @@ public class Space extends World{
 			}
 		} else {
 			System.out.println("Hosting client on this machine. Connection to -> " + address.toString() + ":" + port);
-			
+
 			try {
 				client = new MuenzspielClientConnection(address, port, true);
-//				Thread.sleep(500);
-//				client.start();
-				
+				// Thread.sleep(500);
+				// client.start();
+
 				MuenzspielHostData data = client.read();
-				while(!data.isInitial()){
+				while (!data.isInitial()) {
 					data = client.read();
 				}
-				
+
 				for (SerialCoin c : data.getCoins()) {
 					addObject(new Coin(c.getValue()), c.getX(), c.getY());
 				}
@@ -90,13 +89,13 @@ public class Space extends World{
 			}
 		}
 	}
-	
+
 	public void createCoins() {
 		try {
 			for (int i = 0; i < COIN_COUNT;) {
 				int xPos = Greenfoot.getRandomNumber(getWidth());
 				int yPos = Greenfoot.getRandomNumber(getHeight());
-				
+
 				// randomly get the value of that coin
 				int randomNumber = Greenfoot.getRandomNumber(100);
 				int coinValue = 1;
@@ -105,7 +104,7 @@ public class Space extends World{
 				} else if (randomNumber < 40) {
 					coinValue = 2;
 				}
-				
+
 				Coin c = new Coin(coinValue);
 				addObject(c, xPos, yPos);
 				int imageRadius = c.getImage().getWidth() / 2;
@@ -122,21 +121,22 @@ public class Space extends World{
 			ex.printStackTrace();
 		}
 	}
-	
-	private void showEndScreen(){
+
+	private void showEndScreen() {
 		int score = 0, enemyScore = 0;
-		
-		for(SerialCoin collectedS: collected){
+
+		for (SerialCoin collectedS : collected) {
 			score += collectedS.getValue();
 		}
-		
-		for(SerialCoin collectedE: enemyCollected){
+
+		for (SerialCoin collectedE : enemyCollected) {
 			enemyScore += collectedE.getValue();
 		}
-		
-		this.showText("Congratulations your Score is " + score + ", Enemyscore: " + enemyScore, getWidth() / 2, getHeight() / 2);
+
+		this.showText((score > enemyScore ? "Du hast" : (score < enemyScore ? "Dein Gegner hat" : "Niemand hat"))
+				+ " gewonnen. Dein Score: " + score, getWidth() / 2, getHeight() / 2);
 	}
-	
+
 	public void act() {
 		// Network
 
@@ -146,20 +146,20 @@ public class Space extends World{
 			executeClientTask();
 		}
 
-		if ((getObjects(Coin.class).size() == 0)){
+		if ((getObjects(Coin.class).size() == 0)) {
 			showEndScreen();
 			Greenfoot.stop();
 		}
 	}
-	
-	private void executeHostTask(){
+
+	private void executeHostTask() {
 		MuenzspielClientData data = host.getMostRecent();
-		if(data != null){
+		if (data != null) {
 			SerialCoin[] all = data.getCoins();
-			
-			for(SerialCoin c : all){
+
+			for (SerialCoin c : all) {
 				List<Coin> coins = getObjectsAt(c.getX(), c.getY(), Coin.class);
-				if(coins.size() > 0){
+				if (coins.size() > 0) {
 					enemyCollected.add(new SerialCoin(coins.get(0)));
 					removeObject(coins.get(0));
 				}
@@ -168,34 +168,34 @@ public class Space extends World{
 
 		try {
 			host.sendUpdate(new MuenzspielHostData(collected));
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void executeClientTask(){
+	private void executeClientTask() {
 		MuenzspielHostData data = client.getRecentHostData();
-		if(data != null){
-			if(!data.isInitial()){
+		if (data != null) {
+			if (!data.isInitial()) {
 				SerialCoin[] all = data.getCoins();
-				for(SerialCoin c : all){
+				for (SerialCoin c : all) {
 					List<Coin> coins = getObjectsAt(c.getX(), c.getY(), Coin.class);
-					if(coins.size() > 0){
+					if (coins.size() > 0) {
 						enemyCollected.add(new SerialCoin(coins.get(0)));
 						removeObject(coins.get(0));
 					}
 				}
 			}
 		}
-		
-		try{
+
+		try {
 			SerialCoin[] send = collected.toArray(new SerialCoin[collected.size()]);
 			client.sendUpdate(new MuenzspielClientData(send));
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void addCollected(Coin c) {
 		this.collected.add(new SerialCoin(c));
 	}

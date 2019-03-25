@@ -62,7 +62,6 @@ public class MuenzspielClientConnection extends Thread {
 					this.mostRecentData = (MuenzspielHostData) o;
 				}
 				if(mostRecentData.isInitial()){
-					System.out.println("waiting!");
 					Thread.sleep(250);
 				}
 			} catch (Exception e) {
