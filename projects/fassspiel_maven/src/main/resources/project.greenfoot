@@ -3,7 +3,6 @@
 # Class definitions
 class.de.greenfootdevz.fassspiel.World.FassWorld.image=bricks3.jpg
 class.de.greenfootdevz.fassspiel.Actor.Fass.image=Fass.png
-class.de.greenfootdevz.fassspiel.Actor.Spieler.image=Beisspielchar2.png
 
 
 # Editor Settings

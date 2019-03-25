@@ -5,10 +5,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Spieler extends Actor {
     private String key;
     private String name;
+    private GreenfootImage characterImage;
 
-    public Spieler(String taste, String name) {
+    public Spieler(String taste, String name, GreenfootImage characterImage) {
         this.key = taste;
         this.name = name;
+        this.characterImage = characterImage;
+
+        setImage(characterImage);
     }
 
     public String getKey() {
