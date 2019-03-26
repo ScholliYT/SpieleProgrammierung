@@ -1,6 +1,11 @@
-import greenfoot.*;  
-import java.util.List;
-import java.util.*;
+package de.greenfootdevz.schollenspiel.Actor;
+
+import de.greenfootdevz.schollenspiel.World.IceWorld;
+import greenfoot.Actor;
+import greenfoot.Color;
+import greenfoot.GreenfootImage;
+
+import java.util.Random;
 
 public class Floe extends Actor
 {

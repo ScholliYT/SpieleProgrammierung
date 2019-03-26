@@ -1,5 +1,7 @@
-import greenfoot.*; 
-import java.lang.*;
+package de.greenfootdevz.schollenspiel.Actor;
+
+import de.greenfootdevz.schollenspiel.World.IceWorld;
+import greenfoot.*;
 public class Player extends Actor
 {
     private String[] moves; // 0 = up; 1 = down; 2 = right; 3 = left

@@ -1,5 +1,13 @@
+package de.greenfootdevz.schollenspiel.World;
+
+import de.greenfootdevz.schollenspiel.Actor.Floe;
+import de.greenfootdevz.schollenspiel.Actor.Player;
+import de.greenfootdevz.schollenspiel.Actor.ScannerIceWorld;
 import greenfoot.*;
 import java.util.*;
+
+
+
 public class IceWorld extends World
 {
     private Floe[][] floes;
@@ -33,7 +41,7 @@ public class IceWorld extends World
         this.addObject(player, 90, 90);
         
         
-        ScannerIceWorld scanner = new ScannerIceWorld(); 
+        ScannerIceWorld scanner = new ScannerIceWorld();
         this.addObject(scanner, 0, 0);
     }
     

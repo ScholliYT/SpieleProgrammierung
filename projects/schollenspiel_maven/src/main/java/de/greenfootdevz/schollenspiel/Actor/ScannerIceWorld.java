@@ -1,3 +1,6 @@
+package de.greenfootdevz.schollenspiel.Actor;
+
+import de.greenfootdevz.schollenspiel.World.IceWorld;
 import greenfoot.*;
 import java.util.*;
 public class ScannerIceWorld extends Actor
