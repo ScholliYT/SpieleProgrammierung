@@ -5,4 +5,4 @@ Kurs: Spieleprogrammierung 2018/2019 am RvW Dülmen.
 
 #### Projekt Netzwerkpong
 Eine implementierung von Pong mit einen Mehrspielermodus übers (lokale) Nezwerkt.
-![networkpong](doc/netzwerkpong.png)
+[![networkpong](doc/netzwerkpong.png)](https://github.com/ScholliYT/SpieleProgrammierung/tree/master/projects/network-pong_maven)
