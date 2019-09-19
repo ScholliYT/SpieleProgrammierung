@@ -34,7 +34,7 @@
     <dependency>
       <groupId>org.bluej</groupId>
       <artifactId>bluej-core</artifactId>
-      <version>3.5.4</version>
+      <version>greenfoot-3.5.4</version>
     </dependency>
   </dependencies>
 
