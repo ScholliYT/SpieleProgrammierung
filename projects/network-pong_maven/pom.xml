@@ -27,14 +27,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.greenfoot</groupId>
-      <artifactId>greenfoot</artifactId>
-      <version>3.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.bluej</groupId>
-      <artifactId>bluej-core</artifactId>
-      <version>greenfoot-3.5.4</version>
+      <groupId>sh.lrk</groupId>
+      <artifactId>cleanfoot</artifactId>
+      <version>3.5.5</version>
     </dependency>
   </dependencies>
 
